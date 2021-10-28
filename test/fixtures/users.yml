@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+SYATYO:
+  name: 社長 
+  email: s_shatyo@as-mobi.com
+
+TORISIMARIYAKU:
+  name: 取締役
+  email: t_torisimariyaku@as-mobi.com
