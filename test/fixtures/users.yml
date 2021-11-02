@@ -3,7 +3,4 @@
 SYATYO:
   name: 社長 
   email: s_shatyo@as-mobi.com
-
-TORISIMARIYAKU:
-  name: 取締役
-  email: t_torisimariyaku@as-mobi.com
+  password_digest: <%= User.digest('password') %>
