@@ -4,3 +4,17 @@ SYATYO:
   name: 社長 
   email: s_shatyo@as-mobi.com
   password_digest: <%= User.digest('password') %>
+  admin: true
+  
+BUTYO:
+  name: 部長 
+  email: b_butyo@as-mobi.com
+  password_digest: <%= User.digest('password') %>
+
+
+<% 30.times do |n| %>
+user_<%= n %>:
+  name:  <%= "社員 #{n}" %>
+  email: <%= "#{n}_syain@as-mobi.com" %>
+  password_digest: <%= User.digest('password') %>
+<% end %>
