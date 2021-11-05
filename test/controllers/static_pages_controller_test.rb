@@ -6,9 +6,4 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get help" do
-    get help_path
-    assert_response :success
-  end
-
 end
