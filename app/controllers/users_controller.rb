@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
   
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_params_new)
     if @user.save
       flash[:success] = "ユーザーを登録しました。"
       redirect_to @user
@@ -27,11 +27,20 @@ class UsersController < ApplicationController
   
   def edit
     @user = User.find_by(id: params[:id])
+    @is_name_read_only  = true
+    @is_email_read_only = true
+    if(current_user.admin?)
+      if(current_user?(@user))
+        @is_email_read_only = false
+      else
+        @is_name_read_only = false
+      end
+    end
   end
   
   def update
     @user = User.find_by(id: params[:id])
-    if @user.update_attributes(user_params)
+    if @user.update_attributes(user_params_update)
       flash[:success] = "設定を変更しました"
       redirect_to @user
     else
@@ -51,8 +60,21 @@ class UsersController < ApplicationController
   
   private
   
-    def user_params
+    def user_params_new
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+
+    def user_params_update
+      if current_user.admin?
+        user = User.find_by(id: params[:id])
+        if current_user?(user)
+          params.require(:user).permit(:email, :password, :password_confirmation)
+        else
+          params.require(:user).permit(:name)
+        end
+      else
+        params.require(:user).permit(:password, :password_confirmation)
+      end
     end
     
     # beforeアクション
@@ -69,7 +91,7 @@ class UsersController < ApplicationController
     # 正しいユーザーかどうか確認
     def correct_user
       @user = User.find(params[:id])
-      redirect_to(root_url) unless current_user?(@user)
+      redirect_to(root_url) unless (current_user?(@user) || current_user.admin?)
     end
     
     # 管理者かどうか確認
