@@ -19,6 +19,14 @@
         <%= f.label :password_confirmation, "パスワード確認" %>
         <%= f.password_field :password_confirmation, class: 'form-control' %>
       <% end %>
+
+      <% if current_user.admin %>
+        <%= f.label :password_reset, class: "checkbox inline" do %>
+          <%= f.check_box :password_reset %>
+          <span>パスワードを初期化する</span>
+        <% end %>
+      <% end %>
+
       <%= f.submit "保存", class: "btn btn-primary" %>
     <% end %>
 

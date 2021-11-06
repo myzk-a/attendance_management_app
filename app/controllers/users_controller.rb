@@ -70,7 +70,13 @@ class UsersController < ApplicationController
         if current_user?(user)
           params.require(:user).permit(:email, :password, :password_confirmation)
         else
-          params.require(:user).permit(:name)
+          if params[:user][:password_reset]
+            params[:user][:password] = "password"
+            params[:user][:password_confirmation] = "password"
+            params.require(:user).permit(:name, :password, :password_confirmation)
+          else
+            params.require(:user).permit(:name)
+          end
         end
       else
         params.require(:user).permit(:password, :password_confirmation)
