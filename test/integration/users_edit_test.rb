@@ -6,6 +6,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     @user = users(:SYATYO)
     @admin_user = users(:SYATYO)
     @nonadmin_user = users(:BUTYO)
+    @nonadmin_user2 = users(:KATYO)
   end
 
   test "unsuccessful edit" do
@@ -38,6 +39,15 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_equal name, @nonadmin_user.name
     assert_equal email_before_update, @nonadmin_user.email
     assert_equal password_digest_before_update, @nonadmin_user.password_digest
+  end
+
+  test "reset password" do
+    log_in_as(@admin_user)
+    get edit_user_path(@nonadmin_user2)
+    patch user_path(@nonadmin_user2), params: { user: { password_reset: "1" }}
+    assert_not flash.empty?
+    @nonadmin_user2.reload
+    assert @nonadmin_user2.authenticate("password")
   end
 
   test "edit myself as admin_user" do

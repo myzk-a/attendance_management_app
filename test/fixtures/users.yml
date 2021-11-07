@@ -11,6 +11,11 @@ BUTYO:
   email: b_butyo@as-mobi.com
   password_digest: <%= User.digest('password') %>
 
+KATYO:
+  name: 課長
+  email: k_katyo@as-mobi.com
+  password_digest: <%= User.digest('katyo') %>
+
 
 <% 30.times do |n| %>
 user_<%= n %>:
