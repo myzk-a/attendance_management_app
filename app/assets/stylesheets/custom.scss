@@ -173,3 +173,25 @@ input {
     border-bottom: 1px solid $gray-lighter;
   }
 }
+
+/* admin user menue in user page */
+#admin_page
+{
+  h1
+  {
+    font-size: 2.5em;
+    letter-spacing: -2px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  ul {
+   float:left;
+   position:relative;
+   left:45%;
+  }
+  li {
+    position:relative;
+    left:-50%;
+    margin: 0 0 10px 0;
+  }
+}
