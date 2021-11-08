@@ -3,7 +3,7 @@ require 'test_helper'
 class ProjectTest < ActiveSupport::TestCase
   
   def setup
-    @project = Project.new(name: "プロジェクトX", code: "X")
+    @project = projects(:X)
   end
   
   test "should be valid?" do
