@@ -3,10 +3,11 @@ require 'test_helper'
 class UsersControllerTest < ActionDispatch::IntegrationTest
   
   def setup
-    @user = users(:SYATYO)
-    @other_user = users(:BUTYO)
-    @admin_user = users(:SYATYO)
-    @nonadmin_user = users(:BUTYO)
+    @user           = users(:SYATYO)
+    @other_user     = users(:BUTYO)
+    @admin_user     = users(:SYATYO)
+    @nonadmin_user  = users(:BUTYO)
+    @nonadmin_user2 = users(:KATYO)
   end
   
   test "should redirect index when not logged in" do
@@ -19,7 +20,21 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get signup_path
     assert_response :success
   end
-  
+
+  test "should get show" do
+    log_in_as(@nonadmin_user)
+    get user_path(@nonadmin_user)
+    assert_response :success
+    assert_template 'users/show'
+  end
+
+  test "should get show other user when logged in as admin user" do
+    log_in_as(@admin_user)
+    get user_path(@nonadmin_user)
+    assert_response :success
+    assert_template 'users/show'
+  end
+
   test "should redirect signup when not admin_user" do
     log_in_as(@nonadmin_user)
     get signup_path
@@ -49,6 +64,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_not @other_user.reload.admin?
   end
   
+  test "should redirect show when logged in as wrong user" do
+    log_in_as(@nonadmin_user)
+    get user_path(@nonadmin_user2)
+    assert_redirected_to root_url
+  end
+
   test "should redirect edit when logged in as wrong user" do
     log_in_as(@other_user)
     get edit_user_path(@user)
