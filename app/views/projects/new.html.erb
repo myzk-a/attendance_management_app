@@ -6,7 +6,7 @@
     <%= form_for(@project, url: project_signup_path) do |f| %>
       <%= render 'shared/error_messages', {input: @project} %>
 
-      <%= f.label :name, "プロジェクト" %>
+      <%= f.label :name, "プロジェクト名" %>
       <%= f.text_field :name, class: 'form-control' %>
 
       <%= f.label :code, "プロジェクトコード" %>
