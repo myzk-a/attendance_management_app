@@ -1,9 +1,10 @@
 class ProjectsController < ApplicationController
   include SessionsHelper
 
-  before_action :admin_user, only: [:new, :create]
+  before_action :admin_user
 
   def index
+    @projects = Project.paginate(page: params[:page])
   end
 
   def new
@@ -18,6 +19,18 @@ class ProjectsController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def edit
+  end
+
+  def destroy
+    project = Project.find_by(id: params[:id])
+    unless project.nil?
+      project.destroy
+      flash[:success] = "プロジェクトを削除しました。"
+    end
+    redirect_to projects_url
   end
 
 end

@@ -13,3 +13,9 @@ User.create!(name:  "管理者",
                password:              password,
                password_confirmation: password)
 end
+
+60.times do |n|
+  name = "project_#{n}"
+  code = "code_#{n}"
+  Project.create!(name: name, code: code)
+end

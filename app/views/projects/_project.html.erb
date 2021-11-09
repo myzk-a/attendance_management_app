@@ -1,0 +1,5 @@
+<li>
+  <%= project.name %> | <%= project.code %> |
+  <%= link_to "編集", edit_project_path(project) %> |
+  <%= link_to "削除", project, method: :delete, data: { confirm: "削除しますか？"} %>
+</li>

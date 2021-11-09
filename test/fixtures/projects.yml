@@ -7,3 +7,9 @@ X:
 Y:
   name: プロジェクトY
   code: PY
+
+<% 30.times do |n| %>
+project_<%= n %>:
+  name: <%= "project_#{n}" %>
+  code: <%= "code_#{n}" %>
+<% end %>

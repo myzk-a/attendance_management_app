@@ -1,2 +1,10 @@
-<% provide(:title, 'プロジェクト一覧') %>
-<h1>プロジェクト一覧</h1>
+<% provide(:title, 'プロジェクトコード一覧') %>
+<h1>プロジェクトコード一覧</h1>
+
+<%= will_paginate %>
+
+<ul class="projects">
+  <%= render @projects %>
+</ul>
+
+<%= will_paginate %>
