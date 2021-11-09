@@ -22,6 +22,17 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+    @project = Project.find_by(id: params[:id])
+  end
+
+  def update
+    @project = Project.find_by(id: params[:id])
+    if @project.update_attributes(project_params_update)
+      flash[:success] = "プロジェクトコードを変更しました。"
+      redirect_to projects_path
+    else
+      render 'edit'
+    end
   end
 
   def destroy
@@ -32,5 +43,11 @@ class ProjectsController < ApplicationController
     end
     redirect_to projects_url
   end
+
+  private
+
+    def project_params_update
+      params.require(:project).permit(:code)
+    end
 
 end

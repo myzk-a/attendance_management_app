@@ -5,6 +5,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @admin_user    = users(:SYATYO)
     @nonadmin_user = users(:BUTYO)
+    @project       = projects(:X)
   end
 
   test "should get new" do
@@ -38,6 +39,17 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test "should redirect index when not logged in" do
     get projects_path
+    assert_redirected_to root_url
+  end
+
+  test "should redirect edit when logged in nonadmin user" do
+    log_in_as(@nonadmin_user)
+    get edit_project_path(@project)
+    assert_redirected_to root_url
+  end
+
+  test "should redirect edit when not logged in" do
+    get edit_project_path(@project)
     assert_redirected_to root_url
   end
 
