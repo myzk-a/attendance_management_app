@@ -16,7 +16,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", edit_user_path(@admin_user), count: 0
     assert_select "a[href=?]", logout_path,    count: 0
     assert_select "a[href=?]", login_path
-    assert_select "title", full_title("Home")
+    assert_select "title", full_title("ホーム")
   end
   
   test "layout links after login as admin_user" do
