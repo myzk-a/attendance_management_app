@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include SessionsHelper
+
   before_action :logged_in_user, only: [:edit, :update, :index, :destroy]
   before_action :correct_user,   only: [:edit, :update, :show]
   before_action :admin_user,     only: [:new, :create, :destroy]
@@ -99,10 +101,5 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       redirect_to(root_url) unless (current_user?(@user) || current_user.admin?)
     end
-    
-    # 管理者かどうか確認
-    def admin_user
-      redirect_to(root_url) unless current_user.admin?
-    end
-    
+
 end
