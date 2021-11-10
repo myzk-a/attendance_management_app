@@ -47,6 +47,8 @@ class UsersController < ApplicationController
       flash[:success] = "設定を変更しました"
       redirect_to @user
     else
+      @is_name_read_only  = true
+      @is_email_read_only = true
       render 'edit'
     end
   end
