@@ -3,8 +3,25 @@
 
 <%= will_paginate %>
 
-<ul class="projects">
-  <%= render @projects %>
-</ul>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">プロジェクト名</th>
+      <th scope="col">プロジェクトコード</th>
+      <th scope="col">編集</th>
+      <th scope="col">削除</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @projects.each do |project| %>
+     <tr>
+       <td><%= project.name %></td>
+       <td><%= project.code %></td>
+       <td><%= link_to "編集", edit_project_path(project) %></td>
+       <td><%= link_to "削除", project, method: :delete, data: { confirm: "削除しますか？"} %></td>
+     </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <%= will_paginate %>
