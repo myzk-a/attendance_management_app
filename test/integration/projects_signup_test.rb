@@ -8,18 +8,18 @@ class ProjectsSignupTest < ActionDispatch::IntegrationTest
 
   test "invalid signup information" do
     log_in_as(@admin_user)
-    get project_signup_path
+    get projects_signup_path
     assert_no_difference 'Project.count' do
-      post project_signup_path, params: { project: { name: "", code: "" } }
+      post projects_signup_path, params: { project: { name: "", code: "" } }
     end
     assert_template 'projects/new'
   end
 
   test "valid signup information" do
     log_in_as(@admin_user)
-    get project_signup_path
+    get projects_signup_path
     assert_difference 'Project.count', 1 do
-      post project_signup_path, params: { project: { name: "新規プロジェクト", code: "new" } }
+      post projects_signup_path, params: { project: { name: "新規プロジェクト", code: "new" } }
     end
     follow_redirect!
     assert_template 'projects/index'

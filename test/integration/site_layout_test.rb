@@ -14,7 +14,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", users_path,                  count: 0
     assert_select "a[href=?]", signup_path,                 count: 0
     assert_select "a[href=?]", projects_path,               count: 0
-    assert_select "a[href=?]", project_signup_path,         count: 0
+    assert_select "a[href=?]", projects_signup_path,        count: 0
     assert_select "a[href=?]", edit_user_path(@admin_user), count: 0
     assert_select "a[href=?]", logout_path,                 count: 0
     assert_select "a[href=?]", login_path
@@ -31,7 +31,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", users_path,                  count: 2
     assert_select "a[href=?]", signup_path,                 count: 2
     assert_select "a[href=?]", projects_path,               count: 2
-    assert_select "a[href=?]", project_signup_path,         count: 2
+    assert_select "a[href=?]", projects_signup_path,        count: 2
     assert_select "a[href=?]", edit_user_path(@admin_user), count: 2
     assert_select "a[href=?]", logout_path,                 count: 1
     assert_select "a[href=?]", login_path,                  count: 0
@@ -49,7 +49,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", user_path(@nonadmin_user),      count: 3
     assert_select "a[href=?]", signup_path,                    count: 0
     assert_select "a[href=?]", projects_path,                  count: 0
-    assert_select "a[href=?]", project_signup_path,            count: 0
+    assert_select "a[href=?]", projects_signup_path,           count: 0
     assert_select "a[href=?]", edit_user_path(@nonadmin_user), count: 1
     assert_select "a[href=?]", logout_path,                    count: 1
     assert_select "a[href=?]", login_path,                     count: 0

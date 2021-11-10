@@ -1,5 +1,10 @@
 <% provide(:title, "ユーザー設定") %>
-<h1>設定の変更</h1>
+
+<% if current_user.admin? %>
+  <h1>設定の変更</h1>
+<% else %>
+  <h1>パスワードの変更</h1>
+<% end %>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
@@ -20,7 +25,7 @@
         <%= f.password_field :password_confirmation, class: 'form-control' %>
       <% end %>
 
-      <% if current_user.admin %>
+      <% if current_user.admin && @user.id != current_user.id %>
         <%= f.label :password_reset, class: "checkbox inline" do %>
           <%= f.check_box :password_reset %>
           <span>パスワードを初期化する</span>

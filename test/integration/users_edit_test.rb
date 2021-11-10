@@ -25,6 +25,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     log_in_as(@admin_user)
     get edit_user_path(@nonadmin_user)
     assert_template 'users/edit'
+    assert_select "label.checkbox.inline", count: 1
     name = "foo bar"
     email ="foo_bar@as-mobi.com"
     email_before_update = @nonadmin_user.email
@@ -54,6 +55,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     log_in_as(@admin_user)
     get edit_user_path(@admin_user)
     assert_template 'users/edit'
+    assert_select "label.checkbox.inline", count: 0
     name = "foo bar"
     name_before_update = @admin_user.name
     email ="foo_bar@as-mobi.com"
@@ -74,6 +76,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     log_in_as(@nonadmin_user)
     get edit_user_path(@nonadmin_user)
     assert_template 'users/edit'
+    assert_select "label.checkbox.inline", count: 0
     name  = "Foo Bar"
     name_before_update = @nonadmin_user.name
     email = "f_foo@as-mobi.com"
@@ -84,7 +87,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
                                               password:              "",
                                               password_confirmation: "" } }
     assert_not flash.empty?
-    assert_redirected_to @nonadmin_user
+    assert_redirected_to edit_user_path(@nonadmin_user)
     @nonadmin_user.reload
     assert_equal name_before_update,  @nonadmin_user.name
     assert_equal email_before_update, @nonadmin_user.email

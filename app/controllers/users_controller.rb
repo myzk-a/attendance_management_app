@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
   include SessionsHelper
 
-  before_action :logged_in_user, only: [:edit, :update, :index, :destroy]
-  before_action :correct_user,   only: [:edit, :update, :show]
-  before_action :admin_user,     only: [:new, :create, :destroy]
+  before_action :logged_in_user,    only: [:edit, :update, :index, :destroy]
+  before_action :correct_user,      only: [:edit, :update, :show]
+  before_action :admin_user,        only: [:new, :create, :destroy]
+  before_action :password_presence, only: [:update]
   
   def index
     @users = User.paginate(page: params[:page])
@@ -100,6 +101,17 @@ class UsersController < ApplicationController
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_url) unless (current_user?(@user) || current_user.admin?)
+    end
+
+    #一般ユーザーのパスワード更新時に更新後パスワードが入力されているか確認
+    def password_presence
+      unless current_user.admin?
+        if params[:user][:password] == ""
+          @user = User.find_by(id: params[:id])
+          flash[:new_password_not_presence] = "パスワードが入力されていません。"
+          redirect_to edit_user_path(@user)
+        end
+      end
     end
 
 end

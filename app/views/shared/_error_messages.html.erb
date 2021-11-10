@@ -1,12 +1,17 @@
-<% if input.errors.any? %>
+<% if input.errors.any? || !flash[:new_password_not_presence].nil? %>
   <div id="error_explanation">
     <div class="alert alert-danger">
-      入力情報には<%= input.errors.count %>個のエラーがあります。
+      入力情報には
+        <%= flash[:new_password_not_presence].nil? ? input.errors.count : input.errors.count + 1 %>
+      個のエラーがあります。
     </div>
     <ul>
-    <% input.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
+      <% input.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      <% unless flash[:new_password_not_presence].nil? %>
+        <li><%= flash[:new_password_not_presence] %></li>
+      <% end %>
     </ul>
   </div>
 <% end %>
