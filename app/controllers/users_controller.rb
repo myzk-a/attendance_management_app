@@ -30,15 +30,8 @@ class UsersController < ApplicationController
   
   def edit
     @user = User.find_by(id: params[:id])
-    @is_name_read_only  = true
-    @is_email_read_only = true
-    if(current_user.admin?)
-      if(current_user?(@user))
-        @is_email_read_only = false
-      else
-        @is_name_read_only = false
-      end
-    end
+    set_is_read_only
+    set_edit_page_title
   end
   
   def update
@@ -47,8 +40,8 @@ class UsersController < ApplicationController
       flash[:success] = "設定を変更しました"
       redirect_to @user
     else
-      @is_name_read_only  = true
-      @is_email_read_only = true
+      set_is_read_only
+      set_edit_page_title
       render 'edit'
     end
   end
@@ -87,7 +80,34 @@ class UsersController < ApplicationController
         params.require(:user).permit(:password, :password_confirmation)
       end
     end
-    
+
+    def set_is_read_only
+      if current_user.admin?
+        if current_user.id == @user.id
+          @is_name_read_only  = true
+          @is_email_read_only = false
+        else
+          @is_name_read_only  = false
+          @is_email_read_only = true
+        end
+      else
+        @is_name_read_only  = true
+        @is_email_read_only = true
+      end
+    end
+
+    def set_edit_page_title
+      if current_user.admin?
+        if current_user.id == @user.id
+          @title = "設定の変更"
+        else
+          @title = "ユーザー名の変更"
+        end
+      else
+        @title = "パスワードの変更"
+      end
+    end
+
     # beforeアクション
 
     # ログイン済みユーザーかどうか確認
