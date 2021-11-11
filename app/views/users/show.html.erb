@@ -1,6 +1,10 @@
 <% provide(:title, @user.name) %>
 <% if current_user.admin? %>
-  <%= render 'admin_user' %>
+  <% if current_user.id == @user.id %>
+    <%= render 'admin_user' %>
+  <% else %>
+    <%= render 'nonadmin_user' %>
+  <% end %>
 <% else %>
   <%= render 'nonadmin_user' %>
 <% end %>
