@@ -7,3 +7,12 @@
     </section>
   </aside>
 </div>
+
+<%= month_calendar events: @works do |date, works| %>
+  <%= date.day %>
+  <% works.each do |work| %>
+    <div>
+      <%= "工数登録" %>
+    </div>
+  <% end %>
+<% end %>

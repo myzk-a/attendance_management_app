@@ -12,6 +12,7 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
+    @works = Work.where(user_id: @user_id)
   end
   
   def new
