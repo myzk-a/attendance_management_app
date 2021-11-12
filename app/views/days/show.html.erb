@@ -1,3 +1,13 @@
-<h1>Days#show</h1>
-<p>Find me in app/views/days/show.html.erb</p>
-<%= @works.length %>
+<% if current_user.admin? %>
+  <% provide(:title, '工数確認') %>
+<% else %>
+  <% provide(:title, '工数編集') %>
+<% end %>
+
+<% unless current_user.admin? %>
+  <div>
+    <h1>登録フォーム</h1>
+  </div>
+<% end %>
+
+<%= render 'works_table' %>

@@ -1,0 +1,9 @@
+<% provide(:title, '工数登録') %>
+
+<div>
+    <h1>登録フォーム</h1>
+</div>
+
+<% unless @works.empty? %>
+  <%= render 'works_table' %>
+<% end %>

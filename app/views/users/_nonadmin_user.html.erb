@@ -14,16 +14,16 @@
       <div>
         <span class="unregistered">未登録</span>
         <% unless current_user.admin? %>
-          <%= " / "%><%= link_to "登録する", "/days/#{date}" %>
+          <%= " / "%><%= link_to "登録する", "/days/#{@user.id}/#{date}/new" %>
         <% end %>
       </div>
     <% else %>
       <div>
         <span class="registered">登録済</span><%= " / " %>
         <% unless current_user.admin? %>
-          <%= link_to "編集する", "/days/#{date}" %>
+          <%= link_to "編集する", "/days/#{@user.id}/#{date}" %>
         <% else %>
-          <%= link_to "確認する", "/days/#{date}" %>
+          <%= link_to "確認する", "/days/#{@user.id}/#{date}" %>
         <% end %>
       </div>
     <% end %>
