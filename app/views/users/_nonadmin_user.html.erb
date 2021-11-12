@@ -10,9 +10,21 @@
 
 <%= month_calendar events: @works do |date, works| %>
   <%= date.day %>
-  <% works.each do |work| %>
-    <div>
-      <%= "工数登録" %>
-    </div>
-  <% end %>
+    <% if works.empty? %>
+      <div>
+        <span class="unregistered">未登録</span>
+        <% unless current_user.admin? %>
+          <%= " / "%><%= link_to "登録する", "/days/#{date}" %>
+        <% end %>
+      </div>
+    <% else %>
+      <div>
+        <span class="registered">登録済</span><%= " / " %>
+        <% unless current_user.admin? %>
+          <%= link_to "編集する", "/days/#{date}" %>
+        <% else %>
+          <%= link_to "確認する", "/days/#{date}" %>
+        <% end %>
+      </div>
+    <% end %>
 <% end %>

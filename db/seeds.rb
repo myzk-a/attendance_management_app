@@ -19,3 +19,28 @@ end
   code = "code_#{n}"
   Project.create!(name: name, code: code)
 end
+
+user = User.find_by(id: 2)
+project = Project.first
+Work.create!(user_id:    user.id,
+             user_name:  user.name,
+             project_id: project.id,
+             content:    "制御開発",
+             start_time: 10.minutes.ago,
+             end_time:   5.minutes.ago)
+
+Work.create!(user_id:    user.id,
+             user_name:  user.name,
+             project_id: project.id,
+             content:    "制御開発",
+             start_time: 120.minutes.ago,
+             end_time:   60.minutes.ago)
+
+start_time = DateTime.now - 5
+end_time   = start_time + Rational("1/24")
+Work.create!(user_id:    user.id,
+             user_name:  user.name,
+             project_id: project.id,
+             content:    "制御開発",
+             start_time: start_time,
+             end_time:   end_time)

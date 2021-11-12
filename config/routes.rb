@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'works/new'
-
   root 'static_pages#home'
   get    '/signup',            to: 'users#new'
   post   '/signup',            to: 'users#create'
@@ -13,4 +11,5 @@ Rails.application.routes.draw do
   patch  '/projects/:id/edit', to: 'projects#update'
   resources :users
   resources :projects, except: [:show]
+  resources :days
 end
