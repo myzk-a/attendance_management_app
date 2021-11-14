@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get    '/projects/signup',         to: 'projects#new'
   post   '/projects/signup',         to: 'projects#create'
   patch  '/projects/:id/edit',       to: 'projects#update'
+  get    '/works/:id/edit',          to: 'works#edit'
   get    '/works/:user_id/:day/new', to: 'works#new'
   post   '/works/:user_id/:day/new', to: 'works#create'
   get    '/works/:user_id/:day',     to: 'works#show'

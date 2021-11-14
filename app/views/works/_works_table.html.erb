@@ -16,17 +16,31 @@
   </thead>
   <tbody>
     <% @works.each do |work| %>
-     <tr>
-       <td><%= work.start_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
-       <td><%= work.end_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
-       <td><%= work.project_name %> : <%= work.id %></td>
-       <td><%= work.project_code %></td>
-       <td><%= work.content %></td>
-       <% unless current_user.admin? %>
-         <td><%= link_to "編集", "#" %></td>
-         <td><%= link_to "削除", "#" %></td>
-       <% end %>
-     </tr>
+     <% if work.id == @while_editing %>
+       <tr>
+         <td class="while_editing"><%= work.start_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
+         <td class="while_editing"><%= work.end_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
+         <td class="while_editing"><%= work.project_name %></td>
+         <td class="while_editing"><%= work.project_code %></td>
+         <td class="while_editing"><%= work.content %></td>
+         <% unless current_user.admin? %>
+           <td class="while_editing"><%= "編集中" %></td>
+           <td class="while_editing"><%= "　-　" %></td>
+         <% end %>
+       </tr>
+     <% else %>
+       <tr>
+         <td><%= work.start_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
+         <td><%= work.end_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
+         <td><%= work.project_name %></td>
+         <td><%= work.project_code %></td>
+         <td><%= work.content %></td>
+         <% unless current_user.admin? %>
+           <td><%= link_to "編集", "/works/#{work.id}/edit" %></td>
+           <td><%= link_to "削除", "#" %></td>
+         <% end %>
+       </tr>
+     <% end %>
     <% end %>
   </tbody>
 </table>

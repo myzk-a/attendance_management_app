@@ -40,6 +40,15 @@ Work.create!(user_id:      user.id,
              start_time:   180.minutes.ago,
              end_time:     120.minutes.ago)
 
+Work.create!(user_id:      user.id,
+             user_name:    user.name,
+             project_id:   project.id,
+             project_name: project.name,
+             project_code: project.code,
+             content:      "物体検出機能の開発",
+             start_time:   120.minutes.ago,
+             end_time:     60.minutes.ago)
+
 start_time = DateTime.now - 6
 end_time   = start_time + Rational("1/24")
 Work.create!(user_id:      user.id,
