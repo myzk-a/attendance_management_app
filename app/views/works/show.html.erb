@@ -4,10 +4,4 @@
   <% provide(:title, '工数編集') %>
 <% end %>
 
-<% unless current_user.admin? %>
-  <div>
-    <h2>登録内容の編集</h2>
-  </div>
-<% end %>
-
 <%= render 'works_table' %>
