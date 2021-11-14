@@ -16,6 +16,7 @@ module AttendanceManagemetApp
     # -- all .rb files in that directory are automatically loaded.
     config.i18n.default_locale = :ja
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml').to_s]
-    config.time_zone = 'Tokyo'
+    config.time_zone = 'Asia/Tokyo'
+    config.active_record.default_timezone = :local
   end
 end

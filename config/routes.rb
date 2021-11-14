@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post   '/projects/signup',        to: 'projects#create'
   patch  '/projects/:id/edit',      to: 'projects#update'
   get    '/days/:user_id/:day/new', to: 'days#new'
+  post   '/days/:user_id/:day/new', to: 'days#create'
   get    '/days/:user_id/:day',     to: 'days#show'
   resources :users
   resources :projects, except: [:show]

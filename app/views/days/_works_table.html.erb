@@ -1,3 +1,5 @@
+<h2>登録内容(<%= @date.strftime("%m月%d日") %>)</h2>
+
 <table class="table table-hover">
   <thead>
     <tr>
@@ -15,11 +17,10 @@
   <tbody>
     <% @works.each do |work| %>
      <tr>
-       <% project = Project.find_by(id: work.project_id) %>
-       <td><%= work.start_time %></td>
-       <td><%= work.end_time %></td>
-       <td><%= project.name %></td>
-       <td><%= project.code %></td>
+       <td><%= work.start_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
+       <td><%= work.end_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
+       <td><%= work.project_name %> : <%= work.id %></td>
+       <td><%= work.project_code %></td>
        <td><%= work.content %></td>
        <% unless current_user.admin? %>
          <td><%= link_to "編集", "#" %></td>

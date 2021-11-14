@@ -22,25 +22,31 @@ end
 
 user = User.find_by(id: 2)
 project = Project.first
-Work.create!(user_id:    user.id,
-             user_name:  user.name,
-             project_id: project.id,
-             content:    "制御開発",
-             start_time: 10.minutes.ago,
-             end_time:   5.minutes.ago)
+Work.create!(user_id:      user.id,
+             user_name:    user.name,
+             project_id:   project.id,
+             project_name: project.name,
+             project_code: project.code,
+             content:      "制御開発",
+             start_time:   10.minutes.ago,
+             end_time:     5.minutes.ago)
 
-Work.create!(user_id:    user.id,
-             user_name:  user.name,
-             project_id: project.id,
-             content:    "制御開発",
-             start_time: 120.minutes.ago,
-             end_time:   60.minutes.ago)
+Work.create!(user_id:      user.id,
+             user_name:    user.name,
+             project_id:   project.id,
+             project_name: project.name,
+             project_code: project.code,
+             content:      "制御開発",
+             start_time:   180.minutes.ago,
+             end_time:     120.minutes.ago)
 
-start_time = DateTime.now - 5
+start_time = DateTime.now - 6
 end_time   = start_time + Rational("1/24")
-Work.create!(user_id:    user.id,
-             user_name:  user.name,
-             project_id: project.id,
-             content:    "制御開発",
-             start_time: start_time,
-             end_time:   end_time)
+Work.create!(user_id:      user.id,
+             user_name:    user.name,
+             project_id:   project.id,
+             project_name: project.name,
+             project_code: project.code,
+             content:      "制御開発",
+             start_time:   start_time,
+             end_time:     end_time)
