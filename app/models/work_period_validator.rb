@@ -9,9 +9,9 @@ class WorkPeriodValidator < ActiveModel::EachValidator
 
      # 重複する期間を検索(編集時は自期間を除いて検索)
     if record.id.present?
-      not_own_periods = Work.where('id NOT IN (?) AND start_time <= ? AND end_time >= ?', record.id, new_end_time, new_start_time)
+      not_own_periods = Work.where('id NOT IN (?) AND start_time < ? AND end_time > ?', record.id, new_end_time, new_start_time)
     else
-      not_own_periods = Work.where('start_time <= ? AND end_time >= ?', new_end_time, new_start_time)
+      not_own_periods = Work.where('start_time < ? AND end_time > ?', new_end_time, new_start_time)
     end
 
     record.errors.add(attribute, 'に重複があります') if not_own_periods.present?
