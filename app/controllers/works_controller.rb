@@ -13,6 +13,7 @@ class WorksController < ApplicationController
   def create
     @work = Work.new(works_params)
     if @work.save
+      flash[:success] = "工数を登録しました。"
       redirect_to "/works/#{params[:user_id]}/#{params[:day]}/new"
     else
       @user_id = params[:user_id]
@@ -52,12 +53,29 @@ class WorksController < ApplicationController
       @date = date_wtz.to_date
     end
 
-  private
+    def user_name
+      User.find_by(id: params[:work][:user_id]).name unless params[:work][:user_id].blank?
+    end
+
+    def project_name
+      Project.find_by(id: params[:work][:project_id]).name unless params[:work][:project_id].blank?
+    end
+
+    def project_code
+      Project.find_by(id: params[:work][:project_id]).code unless params[:work][:project_id].blank?
+    end
+
+    def date_time(day, hours, minutes)
+      Time.zone.parse(day+" "+hours+":"+minutes+":00") unless day.empty? || hours.empty? || minutes.empty?
+    end
 
     def works_params
-      user = User.find_by(id: params[:work][:user_id])
-      params[:work][:user_name] = user.name
-      params.require(:work).permit(:user_id, :user_name, :project_id, :project_name, :content, :start_time, :end_time)
+      params[:work][:user_name]    = user_name
+      params[:work][:project_name] = project_name
+      params[:work][:project_code] = project_name
+      params[:work][:start_time]   = date_time(params[:day], params[:work][:start_hours], params[:work][:start_minutes])
+      params[:work][:end_time]     = date_time(params[:day], params[:work][:end_hours], params[:work][:end_minutes])
+      params.require(:work).permit(:user_id, :user_name, :project_id, :project_name, :project_code, :content, :start_time, :end_time)
     end
 
 end
