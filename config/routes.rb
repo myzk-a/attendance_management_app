@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get    '/works/:user_id/:day/new', to: 'works#new'
   post   '/works/:user_id/:day/new', to: 'works#create'
   get    '/works/:user_id/:day',     to: 'works#show'
+  delete '/works/:id',               to: 'works#destroy'
   resources :users
   resources :projects, except: [:show]
 end

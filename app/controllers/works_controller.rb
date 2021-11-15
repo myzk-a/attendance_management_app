@@ -32,6 +32,15 @@ class WorksController < ApplicationController
     set_pull_down_list_for_time_input
   end
 
+  def destroy
+    work    = Work.find_by(id: params[:id])
+    day     = work.start_time.to_date
+    user_id = work.user_id
+    work.destroy
+    flash[:success] = "工数を削除しました。"
+    redirect_to "/works/#{user_id}/#{day}/new"
+  end
+
   private
 
     def set_pull_down_list_for_time_input

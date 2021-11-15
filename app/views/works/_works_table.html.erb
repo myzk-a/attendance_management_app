@@ -37,7 +37,7 @@
          <td><%= work.content %></td>
          <% unless current_user.admin? %>
            <td><%= link_to "編集", "/works/#{work.id}/edit" %></td>
-           <td><%= link_to "削除", "#" %></td>
+           <td><%= link_to "削除", "/works/#{work.id}", method: :delete, data: { confirm: "削除しますか？" } %></td>
          <% end %>
        </tr>
      <% end %>
