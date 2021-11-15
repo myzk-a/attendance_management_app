@@ -1,7 +1,10 @@
 class WorksController < ApplicationController
   before_action :set_pull_down_list_for_time_input
-  before_action :set_instance_variables_by_user_id_and_day, only: [:new, :create]
+  before_action :set_instance_variables_by_user_id_and_day, only: [:new, :create, :show]
   before_action :set_instance_variables_by_work_id, only: [:edit, :update, :destroy]
+
+  def show
+  end
 
   def new
     @work = Work.new

@@ -1,7 +1,3 @@
-<% if current_user.admin? %>
-  <% provide(:title, '工数確認') %>
-<% else %>
-  <% provide(:title, '工数編集') %>
-<% end %>
+<% provide(:title, '工数確認') %>
 
 <%= render 'works_table' %>

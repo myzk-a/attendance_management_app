@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   patch  '/projects/:id/edit',        to: 'projects#update'
   get    '/works/:id/edit',           to: 'works#edit'
   patch  '/works/:id/edit',           to: 'works#update'
+  get    '/works/:user_id/:date',     to: 'works#show'
   get    '/works/:user_id/:date/new', to: 'works#new'
   post   '/works/:user_id/:date/new', to: 'works#create'
   delete '/works/:id',                to: 'works#destroy'
