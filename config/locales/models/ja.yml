@@ -3,6 +3,7 @@ ja:
     models:
       user: ユーザー
       project: プロジェクト
+      work: 工数
     attributes:
       user:
         name: ユーザー名
@@ -12,3 +13,8 @@ ja:
       project:
         name: プロジェクト名
         code: プロジェクトコード
+      work:
+        project_id: プロジェクト名
+        content: 業務内容
+        start_time: 開始時刻
+        end_time: 終了時刻

@@ -11,7 +11,15 @@ class WorksController < ApplicationController
   end
 
   def create
-    redirect_to "/works/#{params[:user_id]}/#{params[:day]}/new"
+    @work = Work.new(works_params)
+    if @work.save
+      redirect_to "/works/#{params[:user_id]}/#{params[:day]}/new"
+    else
+      @user_id = params[:user_id]
+      @date = Time.zone.parse(params[:day]).to_date
+      set_pull_down_list_for_time_input
+      render 'works/new'
+    end
   end
 
   def edit
@@ -26,8 +34,14 @@ class WorksController < ApplicationController
   private
 
     def set_pull_down_list_for_time_input
-      @hours   = [["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]
-      @minutes = [["00", "00"], ["15", "15"], ["30", "30"], ["45", "45"]]
+      @hours = []
+      (0..23).each do |h|
+        @hours.push([h.to_s, h.to_s])
+      end
+      @minutes = []
+      0.step(45, 15) do |m|
+        @minutes.push([m.to_s, m.to_s])
+      end
     end
 
     #before_action
@@ -36,6 +50,14 @@ class WorksController < ApplicationController
       range = date_wtz.beginning_of_day..date_wtz.end_of_day
       @works = Work.where(user_id: params[:user_id] ,start_time: range)
       @date = date_wtz.to_date
+    end
+
+  private
+
+    def works_params
+      user = User.find_by(id: params[:work][:user_id])
+      params[:work][:user_name] = user.name
+      params.require(:work).permit(:user_id, :user_name, :project_id, :project_name, :content, :start_time, :end_time)
     end
 
 end
