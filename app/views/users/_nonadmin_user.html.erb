@@ -25,7 +25,7 @@
       <div>
         <span class="registered">登録済</span><%= " / " %>
         <% unless current_user.admin? %>
-          <%= link_to "編集する", "/works/#{@user.id}/#{date}" %>
+          <%= link_to "編集する", "/works/#{@user.id}/#{date}/new" %>
         <% else %>
           <%= link_to "確認する", "/works/#{@user.id}/#{date}" %>
         <% end %>
