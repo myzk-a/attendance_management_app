@@ -25,7 +25,7 @@
          <td class="while_editing"><%= work.content %></td>
          <% unless current_user.admin? %>
            <td class="while_editing"><%= "編集中" %></td>
-           <td class="while_editing"><%= "　-　" %></td>
+           <td class="while_editing"><%= link_to "削除", "/works/#{work.id}", method: :delete, data: { confirm: "削除しますか？" } %></td>
          <% end %>
        </tr>
      <% else %>
