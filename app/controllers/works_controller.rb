@@ -59,7 +59,7 @@ class WorksController < ApplicationController
     def works_params
       params[:work][:user_name]    = user_name
       params[:work][:project_name] = project_name
-      params[:work][:project_code] = project_name
+      params[:work][:project_code] = project_code
       params[:work][:start_time]   = date_time(@date.to_s, params[:work][:start_hours], params[:work][:start_minutes])
       params[:work][:end_time]     = date_time(@date.to_s, params[:work][:end_hours],   params[:work][:end_minutes])
       params.require(:work).permit(:user_id, :user_name, :project_id, :project_name, :project_code, :content, :start_time, :end_time)
