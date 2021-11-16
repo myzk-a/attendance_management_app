@@ -1,4 +1,6 @@
 class WorksController < ApplicationController
+  before_action :admin_user, only: :show
+  before_action :correct_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_pull_down_list_for_time_input
   before_action :set_instance_variables_by_user_id_and_day, only: [:new, :create, :show]
   before_action :set_instance_variables_by_work_id, only: [:edit, :update, :destroy]
@@ -93,6 +95,23 @@ class WorksController < ApplicationController
       range = @date.beginning_of_day..@date.end_of_day
       @works = Work.where(user_id: @user_id, start_time: range)
       @while_editing = @work.id
+    end
+
+    def correct_user
+      redirect_to root_url if params[:user_id].blank? && params[:id].blank?
+      unless params[:user_id].blank?
+        @user_id = params[:user_id]
+      else
+        work = Work.find_by(id: params[:id])
+        if work.blank?
+          redirect_to root_url
+          return
+        else
+          @user_id = work.user_id
+        end
+      end
+      user = User.find_by(id: @user_id)
+      redirect_to root_url unless current_user?(user)
     end
 
 end
