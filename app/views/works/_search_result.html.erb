@@ -1,0 +1,24 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">氏名</th>
+      <th scope="col">開始時間</th>
+      <th scope="col">終了時間</th>
+      <th scope="col">工数</th>
+      <th scope="col">プロジェクト名</th>
+      <th scope="col">プロジェクトコード</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @works.each do |work| %>
+      <tr>
+        <td><%= work.user_name %></td>
+        <td><%= work.start_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
+        <td><%= work.end_time.strftime("%m月%d日%H時%M分 : %Z") %></td>
+        <td><%= seconds_to_hours_and_minutes( work.end_time.to_i - work.start_time.to_i ) %></td>
+        <td><%= work.project_name %></td>
+        <td><%= work.project_code %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

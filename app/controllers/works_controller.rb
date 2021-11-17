@@ -1,4 +1,6 @@
 class WorksController < ApplicationController
+  include WorksHelper
+
   before_action :admin_user, only: [:show, :search]
   before_action :correct_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_pull_down_list_for_time_input
@@ -43,6 +45,11 @@ class WorksController < ApplicationController
 
   def search
     @search_params = works_search_params
+    @works = Work.search(@search_params) unless works_search_params_is_empty?
+    if params[:search].present? && params[:search][:searching] && @works.blank?
+      flash.now[:danger] = "条件に該当する工数が存在しません。"
+    end
+    @sum_works_time = sum_works_time
   end
 
   private
@@ -79,6 +86,27 @@ class WorksController < ApplicationController
                                         :user_name_pull_down,
                                         :project_name_pull_down,
                                         :project_name )
+    end
+
+    def works_search_params_is_empty?
+      return true if @search_params.blank?
+      if (@search_params[:year].blank?         || @search_params[:month].blank?) &&
+         @search_params[:user_name].blank?     && @search_params[:user_name_pull_down].blank? &&
+         @search_params[:project_name].blank?  && @search_params[:project_name_pull_down].blank?
+
+        return true
+      else
+        return false
+      end
+    end
+
+    def sum_works_time
+      return if @works.blank?
+      sum_seconds = 0
+      @works.each do |work|
+        sum_seconds += work.end_time.to_i - work.start_time.to_i
+      end
+      return seconds_to_hours_and_minutes(sum_seconds)
     end
 
     #before_action
