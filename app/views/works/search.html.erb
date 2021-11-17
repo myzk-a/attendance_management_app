@@ -1,0 +1,32 @@
+<% provide(:title, '工数抽出') %>
+
+<h1>工数抽出</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_with(scope: :search, url: works_search_path, method: :get, local: true) do |f| %>
+
+      <span class="work_time"><%= "対象年月"%></span>
+      <br>
+      <%= f.select :year, @years, {include_blank: "選択して下さい"}, class: "form_date_select" %>
+      <span class="work_time"><%= " 年 " %></span>
+      <%= f.select :month, @months, {include_blank: "選択して下さい"}, class: "form_date_select" %>
+      <span class="work_time"><%= " 月 " %></span>
+      <br>
+
+      <%= f.label :user_name_pull_down, "氏名" %>
+      <%= f.select :user_name_pull_down, @user_names, {include_blank: "選択してください"} %>
+
+      <%= f.label :user_name, "氏名(プルダウンリストにない場合)" %>
+      <%= f.text_field :user_name, value: @search_params[:user_name] %>
+
+      <%= f.label :project_name_pull_down, "プロジェクト名" %>
+      <%= f.select :project_name_pull_down, @project_names, {include_blank: "選択してください"} %>
+
+      <%= f.label :project_name, "プロジェクト名(プルダウンリストにない場合)" %>
+      <%= f.text_field :project_name, value: @search_params[:project_name] %>
+
+      <%= f.submit "抽出", class: "btn btn-primary" %>  
+    <% end %>
+  </div>
+</div>

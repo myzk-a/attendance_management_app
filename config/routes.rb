@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get    '/works/:user_id/:date/new', to: 'works#new'
   post   '/works/:user_id/:date/new', to: 'works#create'
   delete '/works/:id',                to: 'works#destroy'
+  get    'works/search',              to: 'works#search'
   resources :users
   resources :projects, except: [:show]
 end

@@ -1,9 +1,10 @@
 class WorksController < ApplicationController
-  before_action :admin_user, only: :show
+  before_action :admin_user, only: [:show, :search]
   before_action :correct_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_pull_down_list_for_time_input
   before_action :set_instance_variables_by_user_id_and_day, only: [:new, :create, :show]
   before_action :set_instance_variables_by_work_id, only: [:edit, :update, :destroy]
+  before_action :set_pull_down_list_for_works_search, only: [:search]
 
   def show
   end
@@ -40,6 +41,10 @@ class WorksController < ApplicationController
     redirect_to "/works/#{@user_id}/#{@date}/new"
   end
 
+  def search
+    @search_params = works_search_params
+  end
+
   private
 
     def user_name
@@ -67,6 +72,15 @@ class WorksController < ApplicationController
       params.require(:work).permit(:user_id, :user_name, :project_id, :project_name, :project_code, :content, :start_time, :end_time)
     end
 
+    def works_search_params
+      params.fetch(:search, {}).permit( :year,
+                                        :month,
+                                        :user_name,
+                                        :user_name_pull_down,
+                                        :project_name_pull_down,
+                                        :project_name )
+    end
+
     #before_action
 
     def set_pull_down_list_for_time_input
@@ -77,6 +91,32 @@ class WorksController < ApplicationController
       @minutes = []
       0.step(45, 15) do |m|
         @minutes.push([m.to_s, m.to_s])
+      end
+    end
+
+    def set_pull_down_list_for_works_search
+      @user_names = []
+      users = User.all
+      users.each do |user|
+        @user_names.push([user.name, user.name])
+      end
+
+      @project_names = []
+      projects = Project.all
+      projects.each do |project|
+        @project_names.push([project.name, project.name])
+      end
+
+      @years = []
+      year = Time.zone.now.year
+      (-3..0).each do |diff|
+        y = year + diff
+        @years.push([y.to_s, y.to_s])
+      end
+
+      @months = []
+      (1..12).each do |m|
+        @months.push([m.to_s, m.to_s])
       end
     end
 
