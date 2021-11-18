@@ -4,6 +4,7 @@ ja:
       user: ユーザー
       project: プロジェクト
       work: 工数
+      holiday: 休日
     attributes:
       user:
         name: ユーザー名
@@ -18,3 +19,6 @@ ja:
         content: 業務内容
         start_time: 開始時刻
         end_time: 終了時刻
+      holiday:
+        name: 休日名
+        date: 日付

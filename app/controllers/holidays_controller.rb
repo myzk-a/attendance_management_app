@@ -4,6 +4,7 @@ class HolidaysController < ApplicationController
   before_action :admin_user, only: [:new, :create]
 
   def index
+    @holidays = Holiday.all
   end
 
   def new
@@ -11,6 +12,13 @@ class HolidaysController < ApplicationController
   end
 
   def create
+    @holiday = Holiday.new(holiday_params)
+    if @holiday.save
+      flash[:success] = "休日を登録しました。"
+      redirect_to holidays_path
+    else
+      render 'new'
+    end
   end
 
   def edit
