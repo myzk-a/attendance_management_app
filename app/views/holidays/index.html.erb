@@ -19,8 +19,7 @@
        <td><%= holiday.name %></td>
        <% if current_user.admin? %>
          <td><%= link_to "編集", edit_holiday_path(holiday) %></td>
-         <!--<td><#%= link_to "削除", project, method: :delete, data: { confirm: "削除しますか？"} %></td>-->
-         <td><%= "削除" %></td>
+         <td><%= link_to "削除", holiday, method: :delete, data: { confirm: "削除しますか？"} %></td>
        <% end %>
      </tr>
     <% end %>
