@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   post   '/works/:user_id/:date/new', to: 'works#create'
   delete '/works/:id',                to: 'works#destroy'
   get    'works/search',              to: 'works#search'
+  get    '/holidays/signup',          to: 'holidays#new'
+  post   '/holidays/signup',          to: 'holidays#create'
   resources :users
   resources :projects, except: [:show]
+  resources :holidays, except: [:show]
 end
