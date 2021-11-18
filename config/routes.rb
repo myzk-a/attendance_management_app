@@ -21,5 +21,7 @@ Rails.application.routes.draw do
   patch  '/holidays/:id/edit',        to: 'holidays#update'
   resources :users
   resources :projects, except: [:show]
-  resources :holidays, except: [:show]
+  resources :holidays, except: [:show] do
+    collection { post :import }
+  end
 end

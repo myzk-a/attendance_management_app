@@ -1,7 +1,7 @@
 class HolidaysController < ApplicationController
   include SessionsHelper
 
-  before_action :admin_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :admin_user, only: [:new, :create, :edit, :update, :destroy, :import]
   before_action :set_pull_down_list, only: [:index]
 
   def index
@@ -45,6 +45,10 @@ class HolidaysController < ApplicationController
     end
     redirect_to holidays_url
   end
+
+  def import
+  end
+
 
   private
 
