@@ -1,2 +1,28 @@
 <% provide(:title, '休日一覧') %>
 <h1>休日一覧</h1>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">日付</th>
+      <th scope="col">休日名</th>
+      <% if current_user.admin? %>
+        <th scope="col">編集</th>
+        <th scope="col">削除</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @holidays.each do |holiday| %>
+     <tr>
+       <td><%= holiday.date %></td>
+       <td><%= holiday.name %></td>
+       <% if current_user.admin? %>
+         <td><%= link_to "編集", edit_holiday_path(holiday) %></td>
+         <!--<td><#%= link_to "削除", project, method: :delete, data: { confirm: "削除しますか？"} %></td>-->
+         <td><%= "削除" %></td>
+       <% end %>
+     </tr>
+    <% end %>
+  </tbody>
+</table>
