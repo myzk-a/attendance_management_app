@@ -2,9 +2,11 @@ class HolidaysController < ApplicationController
   include SessionsHelper
 
   before_action :admin_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_pull_down_list, only: [:index]
 
   def index
-    @holidays = Holiday.all
+    @search_params = search_params
+    @holidays = Holiday.search(@search_params) unless search_params_is_empty?
   end
 
   def new
@@ -12,7 +14,7 @@ class HolidaysController < ApplicationController
   end
 
   def create
-    @holiday = Holiday.new(holiday_params)
+    @holiday = Holiday.new(holidays_params)
     if @holiday.save
       flash[:success] = "休日を登録しました。"
       redirect_to holidays_url
@@ -46,8 +48,27 @@ class HolidaysController < ApplicationController
 
   private
 
-    def holiday_params
+    def holidays_params
       params.require(:holiday).permit(:name, :date)
+    end
+
+    def search_params
+      params.fetch(:search, {}).permit(:year)
+    end
+
+    def search_params_is_empty?
+      return true if @search_params.blank?
+      @search_params[:year].blank? ? true : false
+    end
+
+    #beforeアクション
+    def set_pull_down_list
+      @years = []
+      year = Time.zone.now.year
+      (-3..0).each do |diff|
+        y = year + diff
+        @years.push([y.to_s+"年", y.to_s])
+      end
     end
 
 end
