@@ -26,6 +26,13 @@ class HolidaysController < ApplicationController
   end
 
   def update
+    @holiday = Holiday.find_by(id: params[:id])
+    if @holiday.update_attributes(holiday_params)
+      flash[:success] = "登録内容を変更しました。"
+      redirect_to holidays_path
+    else
+      render 'edit'
+    end
   end
 
   def destroy
