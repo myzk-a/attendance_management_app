@@ -1,7 +1,7 @@
 class HolidaysController < ApplicationController
   include SessionsHelper
 
-  before_action :admin_user, only: [:new, :create]
+  before_action :admin_user, only: [:new, :create, :edit]
 
   def index
     @holidays = Holiday.all
@@ -22,6 +22,7 @@ class HolidaysController < ApplicationController
   end
 
   def edit
+    @holiday = Holiday.find_by(id: params[:id])
   end
 
   def update
