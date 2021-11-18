@@ -15,7 +15,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(name: params[:project][:name], code: params[:project][:code])
     if @project.save
       flash[:success] = "プロジェクトコードを登録しました。"
-      redirect_to projects_path
+      redirect_to projects_url
     else
       render 'new'
     end
@@ -29,7 +29,7 @@ class ProjectsController < ApplicationController
     @project = Project.find_by(id: params[:id])
     if @project.update_attributes(project_params_update)
       flash[:success] = "プロジェクトコードを変更しました。"
-      redirect_to projects_path
+      redirect_to projects_url
     else
       render 'edit'
     end
