@@ -9,26 +9,9 @@
 </div>
 
 <%= month_calendar events: @works do |date, works| %>
-  <%= date.day %>
-    <% if works.empty? %>
-      <div>
-        <% if Time.zone.now > date %>
-          <span class="unregistered">未登録</span>
-        <% else %>
-          <span class="normal">未登録</span>
-        <% end %>
-        <% if !current_user.admin? && Time.zone.now > date %>
-          <%= " / "%><%= link_to "登録する", "/works/#{@user.id}/#{date}/new" %>
-        <% end %>
-      </div>
-    <% else %>
-      <div>
-        <span class="registered">登録済</span><%= " / " %>
-        <% unless current_user.admin? %>
-          <%= link_to "編集する", "/works/#{@user.id}/#{date}/new" %>
-        <% else %>
-          <%= link_to "確認する", "/works/#{@user.id}/#{date}" %>
-        <% end %>
-      </div>
-    <% end %>
+  <% if holiday_name = date_is_holiday?(date) %>
+    <%= render 'holiday', {works: works, date: date, holiday_name: holiday_name} %>
+  <% else %>
+    <%= render 'weekday', {works: works, date: date} %>
+  <% end %>
 <% end %>

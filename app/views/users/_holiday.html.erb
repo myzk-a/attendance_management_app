@@ -1,0 +1,21 @@
+<% unless holiday_name!="weekend" %>
+  <span class="holiday"><%= date.day %></span>
+<% else %>
+  <span class="holiday"><%= date.day %><%= " (#{holiday_name})"%></span>
+<% end %>
+  
+<div>
+  <span class="holiday">休日</span>
+  <% if works.empty? %>
+    <% if !current_user.admin? && Time.zone.now > date %>
+      <%= link_to " / 登録する", "/works/#{@user.id}/#{date}/new" %>
+    <% end %>
+</div>
+  <% else %>
+    <% unless current_user.admin? %>
+      <%= link_to " / 編集する", "/works/#{@user.id}/#{date}/new" %>
+    <% else %>
+      <%= link_to " / 確認する", "/works/#{@user.id}/#{date}" %>
+    <% end %>
+  <% end %>
+</div>
