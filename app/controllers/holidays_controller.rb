@@ -29,7 +29,7 @@ class HolidaysController < ApplicationController
 
   def update
     @holiday = Holiday.find_by(id: params[:id])
-    if @holiday.update_attributes(holiday_params)
+    if @holiday.update_attributes(holidays_params)
       flash[:success] = "登録内容を変更しました。"
       redirect_to holidays_url
     else
