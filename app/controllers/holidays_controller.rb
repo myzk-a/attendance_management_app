@@ -47,6 +47,17 @@ class HolidaysController < ApplicationController
   end
 
   def import
+    if params[:file].blank?
+      flash[:danger] = "ファイルを選択してください。"
+      redirect_to holidays_signup_url
+    elsif File.extname(params[:file].original_filename) != ".csv"
+      flash[:danger] = "拡張子が不正です。csvファイルを選択してください。"
+      redirect_to holidays_signup_url
+    else
+      Holiday.import(params[:file])
+      flash[:success] = "登録しました。"
+      redirect_to holidays_url
+    end
   end
 
 
