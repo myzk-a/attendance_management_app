@@ -12,7 +12,9 @@ class Holiday < ApplicationRecord
 
   def self.import(file)
     CSV.foreach(file.path, encoding: "BOM|UTF-8", headers: true, nil_value: "") do |row|
-      if row["name"].present? && row["date"].present?
+      #pattern : yyyy/mm/dd
+      pattern = /\d{4}\/\d{1,2}\/\d{1,2}/
+      if row["name"].present? && row["date"].present? && row["date"].match(pattern)
         # 同じdateのレコードが見つかれば呼び出し、見つかれなければ、新しく作成
         holiday = new
         # CSVからデータを取得し、設定する
