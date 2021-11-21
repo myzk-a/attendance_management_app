@@ -1,9 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  date: 2021-11-18
-
-two:
-  name: MyString
-  date: 2021-11-18
+holiday:
+  name: 勤労感謝の日
+  date: 2021-11-23

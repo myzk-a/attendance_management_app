@@ -8,15 +8,21 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     @project       = projects(:X)
   end
 
-  test "should get new" do
+  test "should get new when logged in admin user" do
     log_in_as(@admin_user)
     get projects_signup_path
     assert_response :success
   end
 
-  test "should get index" do
+  test "should get index when logged in admin user" do
     log_in_as(@admin_user)
     get projects_path
+    assert_response :success
+  end
+
+  test "should get edit when logged in admin user" do
+    log_in_as(@admin_user)
+    get edit_project_path(@project)
     assert_response :success
   end
 
@@ -28,7 +34,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test "should redirect new when not logged in" do
     get projects_signup_path
-    assert_redirected_to root_url
+    assert_redirected_to login_url
   end
 
   test "should redirect index when logged in nonadmin user" do
@@ -39,7 +45,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test "should redirect index when not logged in" do
     get projects_path
-    assert_redirected_to root_url
+    assert_redirected_to login_url
   end
 
   test "should redirect edit when logged in nonadmin user" do
@@ -50,7 +56,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test "should redirect edit when not logged in" do
     get edit_project_path(@project)
-    assert_redirected_to root_url
+    assert_redirected_to login_url
   end
 
   test "should redirect destroy when logged in nonadmin user" do
@@ -65,7 +71,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Project.count' do
       delete project_path(@project)
     end
-    assert_redirected_to root_url
+    assert_redirected_to login_url
   end
 
 end

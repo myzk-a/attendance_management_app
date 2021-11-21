@@ -1,6 +1,7 @@
 class HolidaysController < ApplicationController
   include SessionsHelper
 
+  before_action :logged_in_user
   before_action :admin_user, only: [:new, :create, :edit, :update, :destroy, :import]
   before_action :set_pull_down_list, only: [:index]
 

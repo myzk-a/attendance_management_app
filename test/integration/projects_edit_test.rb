@@ -48,11 +48,11 @@ class ProjectsEditTest < ActionDispatch::IntegrationTest
     name = "project XX"
     code = "XX"
     patch project_path(@project), params: { project: { name: name,  code: code } }
-    assert flash.empty?
+    assert_not flash.empty?
     @project.reload
     assert_not_equal name, @project.name
     assert_not_equal code, @project.code
-    assert_redirected_to root_url
+    assert_redirected_to login_url
   end 
 
 end
