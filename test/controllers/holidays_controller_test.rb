@@ -25,6 +25,15 @@ class HolidaysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should delete holiday when logged in admin user" do
+    log_in_as(@admin_user)
+    assert_difference 'Holiday.count', -1 do
+      delete holiday_path(@holiday)
+    end
+    assert_not flash.empty?
+    assert_redirected_to holidays_path
+  end
+
   test "should get index when logged in nonadmin user" do
     log_in_as(@nonadmin_user)
     get holidays_path
