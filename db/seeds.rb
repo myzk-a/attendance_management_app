@@ -28,8 +28,8 @@ Work.create!(user_id:      user.id,
              project_name: project.name,
              project_code: project.code,
              content:      "制御開発",
-             start_time:   10.minutes.ago,
-             end_time:     5.minutes.ago)
+             start_time:   Time.zone.parse('2021-11-15 15:30:00'),
+             end_time:     Time.zone.parse('2021-11-15 15:45:00'))
 
 Work.create!(user_id:      user.id,
              user_name:    user.name,
@@ -37,8 +37,8 @@ Work.create!(user_id:      user.id,
              project_name: project.name,
              project_code: project.code,
              content:      "制御開発",
-             start_time:   180.minutes.ago,
-             end_time:     120.minutes.ago)
+             start_time:   Time.zone.parse('2021-11-15 8:30:00'),
+             end_time:     Time.zone.parse('2021-11-15 10:30:00'))
 
 Work.create!(user_id:      user.id,
              user_name:    user.name,
@@ -46,16 +46,14 @@ Work.create!(user_id:      user.id,
              project_name: project.name,
              project_code: project.code,
              content:      "物体検出機能の開発",
-             start_time:   120.minutes.ago,
-             end_time:     60.minutes.ago)
+             start_time:   Time.zone.parse('2021-11-16 10:30:00'),
+             end_time:     Time.zone.parse('2021-11-16 11:30:00'))
 
-start_time = DateTime.now - 6
-end_time   = start_time + Rational("1/24")
 Work.create!(user_id:      user.id,
              user_name:    user.name,
              project_id:   project.id,
              project_name: project.name,
              project_code: project.code,
              content:      "制御開発",
-             start_time:   start_time,
-             end_time:     end_time)
+             start_time:   Time.zone.parse('2021-11-8 15:30:00'),
+             end_time:     Time.zone.parse('2021-11-8 16:30:00'))
