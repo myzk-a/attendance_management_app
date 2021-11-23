@@ -11,6 +11,7 @@ class HolidaysSignupTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Holiday.count' do
       post holidays_signup_path, params: { holiday: { name: "", date: "" } }
     end
+    assert_select "div#error_explanation"
     assert_template 'holidays/new'
   end
 
@@ -18,7 +19,7 @@ class HolidaysSignupTest < ActionDispatch::IntegrationTest
     log_in_as(@admin_user)
     get holidays_signup_path
     assert_difference 'Holiday.count', 1 do
-      post holidays_signup_path, params: { holiday: { name: "休日", date: DateTime.now.to_date } }
+      post holidays_signup_path, params: { holiday: { name: "休日", date: Time.zone.parse('2021-12-31 00:00:00').to_date } }
     end
     follow_redirect!
     assert_template 'holidays/index'
