@@ -44,6 +44,7 @@ class WorksSignupTest < ActionDispatch::IntegrationTest
     assert_match "12時30分", response.body
     assert_match @project.name, response.body
     assert_match @project.code, response.body
+    assert_match "test", response.body
     assert_match "編集", response.body
     assert_match "削除", response.body
     work = Work.first
