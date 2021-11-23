@@ -40,6 +40,12 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
     assert_no_match "登録内容", response.body
   end
 
+  test "should get search when loggged in admin user" do
+    log_in_as(@admin_user)
+    get works_search_path
+    assert_response :success
+  end
+
   test "should redirect new when not logged in" do
     get "/works/#{@butyo.id}/#{@today}/new"
     assert_redirected_to login_url
@@ -221,6 +227,42 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to root_url
     assert flash.empty?
+  end
+
+  test "should redirect search when not logged in" do
+    get works_search_path
+    assert_redirected_to login_url
+  end
+
+  test "should redirect search when logged in nondamin user" do
+    log_in_as(@butyo)
+    get works_search_path
+    assert_redirected_to root_url
+  end
+
+  test "should redirect search with search item when not logged in" do
+    get works_search_path, params: { search: { searching: true,
+                                               year: "2021",
+                                               month: "11",
+                                               user_name_pull_down: "",
+                                               user_name: "",
+                                               project_name_pull_down: "",
+                                               project_name: "" } }
+    assert_no_match "抽出結果", response.body
+    assert_redirected_to login_url
+  end
+
+  test "should redirect search with search item when logged in nonadmin user" do
+    log_in_as(@butyo)
+    get works_search_path, params: { search: { searching: true,
+                                               year: "2021",
+                                               month: "11",
+                                               user_name_pull_down: "",
+                                               user_name: "",
+                                               project_name_pull_down: "",
+                                               project_name: "" } }
+    assert_no_match "抽出結果", response.body
+    assert_redirected_to root_url
   end
 
 end
