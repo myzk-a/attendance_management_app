@@ -47,6 +47,8 @@ class HolidaysSignupTest < ActionDispatch::IntegrationTest
     log_in_as(@admin_user)
     get holidays_signup_path
     assert_template 'holidays/new'
+    assert_match "<label for=\"file\">", response.body
+    assert_match "<input accept=\".csv\" ", response.body
     holidays_csv = fixture_file_upload("/files/invalid_holidays.csv", "text/csv")
     post import_holidays_path, params: { file: holidays_csv }
     follow_redirect!
