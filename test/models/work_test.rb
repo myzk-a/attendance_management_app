@@ -33,16 +33,6 @@ class WorkTest < ActiveSupport::TestCase
     assert_not @work.valid?
   end
 
-  test "project_name should be present" do
-    @work.project_name = " "
-    assert_not @work.valid?
-  end
-
-  test "project_code should be present" do
-    @work.project_code = " "
-    assert_not @work.valid?
-  end
-
   test "content should be present" do
     @work.content = " "
     assert_not @work.valid?

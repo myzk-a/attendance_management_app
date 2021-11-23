@@ -12,8 +12,6 @@ class Work < ApplicationRecord
   validate  :time_integrity
   validate  :minutes_integrity
   validates :project_id,   presence: true
-  validates :project_name, presence: true
-  validates :project_code, presence: true
   validates :content,      presence: true, length: {maximum: 30}
 
   #バリデーションメソッド
