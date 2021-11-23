@@ -1,0 +1,7 @@
+<div class="csv_import_form">
+  <%= form_with( url: url, multipart: true, local: true ) do |f| %>
+    <%= f.label :file, explain %>
+    <%= f.file_field :file, accept: '.csv', class: 'form-control' %>
+    <%= f.submit "読み込み", class: "btn btn-primary" %>
+  <% end %>
+</div>
