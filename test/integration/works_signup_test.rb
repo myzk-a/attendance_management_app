@@ -22,7 +22,7 @@ class WorksSignupTest < ActionDispatch::IntegrationTest
     end
     assert_select "div#error_explanation"
     assert_template "works/new"
-  end 
+  end
 
   test "valid signup information" do
     log_in_as(@butyo)
