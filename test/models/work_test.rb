@@ -3,6 +3,7 @@ require 'test_helper'
 class WorkTest < ActiveSupport::TestCase
   def setup
     @user    = users(:BUTYO)
+    @user2   = users(:SYUNIN)
     @project = projects(:X)
     @work    = Work.new( user_id:      @user.id,
                          user_name:    @user.name,
@@ -75,6 +76,11 @@ class WorkTest < ActiveSupport::TestCase
     assert_not duplicate_work.valid?
     duplicate_work.start_time = Time.zone.parse('2021-11-23 15:45:34')
     duplicate_work.end_time   = Time.zone.parse('2021-11-23 16:45:34')
+    assert duplicate_work.valid?
+    duplicate_work.start_time = Time.zone.parse('2021-11-23 15:30:12')
+    assert_not duplicate_work.valid?
+    duplicate_work.user_id   = @user2.id
+    duplicate_work.user_name = @user2.name
     assert duplicate_work.valid?
   end
 
