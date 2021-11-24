@@ -41,21 +41,24 @@ class HolidaysSignupTest < ActionDispatch::IntegrationTest
     end
     follow_redirect!
     assert_template 'holidays/index'
-    assert_not flash.empty?
+    assert_not flash[:success].blank?
+    assert flash[:danger].blank?
     get holidays_path, params: { search: { year: "2020" } }
     assert_select "table", count: 1
     assert_match "2020-01-01", response.body
-    #文字コードがutf-8の場合
+    #文字コードがutf-8の場合(レーコード2件)
     holidays_csv = fixture_file_upload("/files/holidays/valid_holidays_utf8.csv", "text/csv")
-    assert_difference 'Holiday.count', 1 do
+    assert_difference 'Holiday.count', 2 do
       post import_holidays_path, params: { file: holidays_csv }
     end
     follow_redirect!
     assert_template 'holidays/index'
-    assert_not flash.empty?
+    assert_not flash[:success].blank?
+    assert flash[:danger].blank?
     get holidays_path, params: { search: { year: "2020" } }
     assert_select "table", count: 1
     assert_match "2020-01-02", response.body
+    assert_match "2020-02-02", response.body
     #文字コードがBOM付きutf-8の場合
     holidays_csv = fixture_file_upload("/files/holidays/valid_holidays_utf8_with_BOM.csv", "text/csv")
     assert_difference 'Holiday.count', 1 do
@@ -63,12 +66,14 @@ class HolidaysSignupTest < ActionDispatch::IntegrationTest
     end
     follow_redirect!
     assert_template 'holidays/index'
-    assert_not flash.empty?
+    assert_not flash[:success].blank?
+    assert flash[:danger].blank?
     get holidays_path, params: { search: { year: "2020" } }
     assert_select "table", count: 1
     assert_match "2020-01-01", response.body
     assert_match "2020-01-02", response.body
     assert_match "2020-01-03", response.body
+    assert_match "2020-02-02", response.body
   end
 
   test "invalid sign up information via invalid csv" do
