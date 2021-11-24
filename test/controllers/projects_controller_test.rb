@@ -74,4 +74,21 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_url
   end
 
+  test "should redirect import when not logged in" do
+    projects_csv = fixture_file_upload("/files/projects/valid_projects_sjis.csv", "text/csv")
+    assert_no_difference 'Project.count' do
+      post import_projects_path, params: { file: projects_csv }
+    end
+    assert_redirected_to login_url
+  end
+
+  test "should redirect import when logged in nonadmin user" do
+    log_in_as(@nonadmin_user)
+    projects_csv = fixture_file_upload("/files/projects/valid_projects_sjis.csv", "text/csv")
+    assert_no_difference 'Project.count' do
+      post import_projects_path, params: { file: projects_csv }
+    end
+    assert_redirected_to root_url
+  end
+
 end

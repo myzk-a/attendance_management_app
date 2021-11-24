@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   post   '/holidays/signup',          to: 'holidays#create'
   patch  '/holidays/:id/edit',        to: 'holidays#update'
   resources :users
-  resources :projects, except: [:show]
+  resources :projects, except: [:show] do
+    collection { post :import }
+  end
   resources :holidays, except: [:show] do
     collection { post :import }
   end
