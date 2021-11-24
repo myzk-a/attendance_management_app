@@ -24,7 +24,7 @@ class Holiday < ApplicationRecord
         holiday.name = row["name"]
         holiday.date = row["date"].to_date unless row["date"].blank?
         # 保存する
-        if holiday.save && saved == false
+        if holiday.save
           saved = true
         else
           all_saved = false
