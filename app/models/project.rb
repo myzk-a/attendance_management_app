@@ -15,7 +15,7 @@ class Project < ApplicationRecord
         project.name = row["name"]
         project.code = row["code"]
         # 保存する
-        if project.save && saved == false
+        if project.save
           saved = true
         else
           all_saved = false
