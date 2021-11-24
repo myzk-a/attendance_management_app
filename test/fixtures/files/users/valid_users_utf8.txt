@@ -1,0 +1,2 @@
+name,email
+居原田　大介,d_iharada@as-mobi.com

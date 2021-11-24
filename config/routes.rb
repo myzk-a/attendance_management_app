@@ -19,7 +19,9 @@ Rails.application.routes.draw do
   get    '/holidays/signup',          to: 'holidays#new'
   post   '/holidays/signup',          to: 'holidays#create'
   patch  '/holidays/:id/edit',        to: 'holidays#update'
-  resources :users
+  resources :users do
+    collection { post :import }
+  end
   resources :projects, except: [:show] do
     collection { post :import }
   end

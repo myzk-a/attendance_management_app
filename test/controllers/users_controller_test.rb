@@ -92,12 +92,29 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_url
   end
 
-  test "should redirect destroy when logged in as a non-admin" do
+  test "should redirect destroy when logged in as non-admin" do
     log_in_as(@other_user)
     assert_no_difference 'User.count' do
       delete user_path(@user)
     end
     assert_redirected_to root_url
   end
-  
+
+  test "should redirect import when not logged in" do
+    users_csv = fixture_file_upload("files/users/valid_users_utf8.csv", "text/csv")
+    assert_no_difference 'User.count' do
+      post import_users_path, params: { file: users_csv }
+    end
+    assert_redirected_to login_url
+  end
+
+  test "should redirect import when logged in as nonadmin user" do
+    log_in_as(@nonadmin_user)
+    users_csv = fixture_file_upload("files/users/valid_users_utf8.csv", "text/csv")
+    assert_no_difference 'User.count' do
+      post import_users_path, params: { file: users_csv }
+    end
+    assert_redirected_to root_url
+  end
+
 end

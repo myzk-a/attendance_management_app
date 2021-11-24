@@ -42,4 +42,36 @@ class User < ApplicationRecord
   def forget
     update_attribute(:remember_digest, nil)
   end
+
+  def self.import(file)
+    encoding = set_encoding(file)
+    return "all_invalid" if encoding.nil?
+    saved     = false
+    all_saved = true
+    CSV.foreach(file.path, encoding: encoding, headers: true, nil_value: "") do |row|
+      if row["name"].present? && row["email"].present?
+        user = new
+        # CSVからデータを取得し、設定する
+        user.name = row["name"]
+        user.email = row["email"]
+        user.password = "password"
+        user.password_confirmation = "password"
+
+        # 保存する
+        if user.save
+          saved = true
+        else
+          all_saved = false
+        end
+      end
+    end
+    if all_saved && saved
+      return "all_saved"
+    elsif saved
+      return "some_are_invalid"
+    else
+      return "all_invalid"
+    end
+  end
+
 end
