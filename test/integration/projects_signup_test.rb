@@ -39,17 +39,20 @@ class ProjectsSignupTest < ActionDispatch::IntegrationTest
     end
     follow_redirect!
     assert_template 'projects/index'
-    assert_not flash.empty?
+    assert_not flash[:success].blank?
+    assert flash[:danger].blank?
     assert_match "2190_1", response.body
-    #文字コードがutf-8の場合
+    #文字コードがutf-8の場合(レコード2件)
     projects_csv = fixture_file_upload("/files/projects/valid_projects_utf8.csv", "text/csv")
-    assert_difference 'Project.count', 1 do
+    assert_difference 'Project.count', 2 do
       post import_projects_path, params: { file: projects_csv }
     end
     follow_redirect!
     assert_template 'projects/index'
-    assert_not flash.empty?
+    assert_not flash[:success].blank?
+    assert flash[:danger].blank?
     assert_match "2100_1", response.body
+    assert_match "2126_1", response.body
     #文字コードがBOM付きutf-8の場合
     projects_csv = fixture_file_upload("/files/projects/valid_projects_utf8_with_BOM.csv", "text/csv")
     assert_difference 'Project.count', 1 do
@@ -57,10 +60,12 @@ class ProjectsSignupTest < ActionDispatch::IntegrationTest
     end
     follow_redirect!
     assert_template 'projects/index'
-    assert_not flash.empty?
+    assert_not flash[:success].blank?
+    assert flash[:danger].blank?
     assert_match "2191_1", response.body
     assert_match "2190_1", response.body
     assert_match "2100_1", response.body
+    assert_match "2126_1", response.body
   end
 
   test "invalid sign up information via invalid csv" do
