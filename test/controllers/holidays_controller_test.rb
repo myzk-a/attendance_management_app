@@ -104,4 +104,21 @@ class HolidaysControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_url
   end
 
+  test "should redirect import when not logged in" do
+    holidays_csv = fixture_file_upload("/files/holidays/valid_holidays_shift_jis.csv", "text/csv")
+    assert_no_difference 'Holiday.count' do
+      post import_holidays_path, params: { file: holidays_csv }
+    end
+    assert_redirected_to login_url
+  end
+
+  test "should redirect import when logged in nonadmin user" do
+    log_in_as(@nonadmin_user)
+    holidays_csv = fixture_file_upload("/files/holidays/valid_holidays_shift_jis.csv", "text/csv")
+    assert_no_difference 'Holiday.count' do
+      post import_holidays_path, params: { file: holidays_csv }
+    end
+    assert_redirected_to root_url
+  end
+
 end

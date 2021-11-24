@@ -60,7 +60,7 @@ class HolidaysController < ApplicationController
         flash[:success] = "登録しました。"
         redirect_to holidays_url
       elsif result == "some_are_invalid"
-        flash[:danger] = "一部不正なデータがありました。正常なデータのみ登録しました。"
+        flash[:danger] = "一部不正なデータがありました。正しいデータのみ登録しました。"
         redirect_to holidays_url
       else
         flash[:danger] = "登録に失敗しました。データが不正です。"
