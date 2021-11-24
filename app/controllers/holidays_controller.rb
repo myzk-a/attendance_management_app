@@ -55,9 +55,18 @@ class HolidaysController < ApplicationController
       flash[:danger] = "拡張子が不正です。csvファイルを選択してください。"
       redirect_to holidays_signup_url
     else
-      Holiday.import(params[:file])
-      flash[:success] = "登録しました。"
-      redirect_to holidays_url
+      result = Holiday.import(params[:file])
+      if result == "all_saved"
+        flash[:success] = "登録しました。"
+        redirect_to holidays_url
+      elsif result == "some_are_invalid"
+        flash[:danger] = "一部不正なデータがありました。正常なデータのみ登録しました。"
+        redirect_to holidays_url
+      else
+        flash[:danger] = "登録に失敗しました。データが不正です。"
+        redirect_to holidays_signup_url
+      end
+
     end
   end
 

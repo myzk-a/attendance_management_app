@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <%= form_for(@holiday, url: holidays_signup_path) do |f| %>
-      <%= render 'shared/error_messages', {input: @holiday} %>
+      <%= render 'shared/error_messages', { input: @holiday } %>
 
       <%= f.label :name, "休日名" %>
       <%= f.text_field :name, class: 'form-control' %>
@@ -15,7 +15,9 @@
       <%= f.submit "登録", class: "btn btn-primary" %>
     <% end %>
 
-    <%= render 'shared/load_csv', {url: import_holidays_path, explain: "csvから読み込む(ヘッダーに「name」と「date」を設定してください。)"} %>
+    <%= render 'shared/load_csv', { url: import_holidays_path,
+                                    explain: "(ヘッダーに「name」と「date」を設定してください。
+                                               また、日付は「2021/1/1」のように記述してください。)" } %>
 
   </div>
 </div>

@@ -11,18 +11,33 @@ class Holiday < ApplicationRecord
   end
 
   def self.import(file)
-    CSV.foreach(file.path, encoding: "BOM|UTF-8", headers: true, nil_value: "") do |row|
+    encoding = set_encoding(file)
+    return "all_invalid" if encoding.nil?
+    saved     = false
+    all_saved = true
+    CSV.foreach(file.path, encoding: encoding, headers: true, nil_value: "") do |row|
       #pattern : yyyy/mm/dd
       pattern = /\d{4}\/\d{1,2}\/\d{1,2}/
       if row["name"].present? && row["date"].present? && row["date"].match(pattern)
-        # 同じdateのレコードが見つかれば呼び出し、見つかれなければ、新しく作成
         holiday = new
         # CSVからデータを取得し、設定する
         holiday.name = row["name"]
         holiday.date = row["date"].to_date unless row["date"].blank?
         # 保存する
-        holiday.save
+        if holiday.save && saved == false
+          saved = true
+        else
+          all_saved = false
+        end
       end
     end
+    if all_saved && saved
+      return "all_saved"
+    elsif saved
+      return "some_are_invalid"
+    else
+      return "all_invalid"
+    end
   end
+
 end
