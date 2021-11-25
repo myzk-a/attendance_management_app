@@ -5,17 +5,17 @@
   
   <span class="work_time"><%= "開始時刻 : "%></span>
   <br>
-  <%= f.select :start_hours, @hours, {include_blank: "選択して下さい"}, class: "form_date_select" %>
+  <%= f.select :start_hours, @hours, {include_blank: "選択して下さい", selected: @s_hour}, class: "form_date_select" %>
   <span class="work_time"><%= " 時 " %></span>
-  <%= f.select :start_minutes, @minutes, {include_blank: "選択して下さい"}, class: "form_date_select" %>
+  <%= f.select :start_minutes, @minutes, {include_blank: "選択して下さい", selected: @s_min}, class: "form_date_select" %>
   <span class="work_time"><%= " 分～ " %></span>
   <br>
 
   <span class="work_time"><%= "終了時刻 : "%></span>
   <br>
-  <%= f.select :end_hours, @hours, {include_blank: "選択して下さい"}, class: "form_date_select" %>
+  <%= f.select :end_hours, @hours, {include_blank: "選択して下さい", selected: @e_hour}, class: "form_date_select" %>
   <span class="work_time"><%= " 時 " %></span>
-  <%= f.select :end_minutes, @minutes, {include_blank: "選択して下さい"}, class: "form_date_select" %>
+  <%= f.select :end_minutes, @minutes, {include_blank: "選択して下さい", selected: @e_min}, class: "form_date_select" %>
   <span class="work_time"><%= " 分 " %></span>
   <br>
 

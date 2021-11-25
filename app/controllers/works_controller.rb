@@ -23,6 +23,10 @@ class WorksController < ApplicationController
       flash[:success] = "工数を登録しました。"
       redirect_to "/works/#{@user_id}/#{@date}/new"
     else
+      @s_hour = params[:work][:start_hours] if params[:work][:start_hours].present?
+      @s_min  = params[:work][:start_minutes] if params[:work][:start_minutes].present?
+      @e_hour = params[:work][:end_hours] if params[:work][:end_hours].present?
+      @e_min  = params[:work][:end_minutes] if params[:work][:end_minutes].present?
       render 'works/new'
     end
   end
@@ -165,6 +169,10 @@ class WorksController < ApplicationController
       range = @date.beginning_of_day..@date.end_of_day
       @works = Work.where(user_id: @user_id, start_time: range)
       @while_editing = @work.id
+      @s_hour = @work.start_time.hour
+      @s_min  = @work.start_time.min
+      @e_hour = @work.end_time.hour
+      @e_min  = @work.end_time.min
     end
 
     def correct_user
