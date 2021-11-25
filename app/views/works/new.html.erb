@@ -4,37 +4,7 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@work, url: "/works/#{@user_id}/#{@date}/new") do |f| %>
-      <%= render 'shared/error_messages', {input: @work} %>
-
-      <%= f.hidden_field :user_id, value: @user_id %>
-
-      <span class="work_time"><%= "開始時刻 : "%></span>
-      <br>
-      <%= f.select :start_hours, @hours, {include_blank: "選択して下さい"}, class: "form_date_select" %>
-      <span class="work_time"><%= " 時 " %></span>
-      <%= f.select :start_minutes, @minutes, {include_blank: "選択して下さい"}, class: "form_date_select" %>
-      <span class="work_time"><%= " 分～ " %></span>
-      <br>
-
-      <span class="work_time"><%= "終了時刻 : "%></span>
-      <br>
-      <%= f.select :end_hours, @hours, {include_blank: "選択して下さい"}, class: "form_date_select" %>
-      <span class="work_time"><%= " 時 " %></span>
-      <%= f.select :end_minutes, @minutes, {include_blank: "選択して下さい"}, class: "form_date_select" %>
-      <span class="work_time"><%= " 分 " %></span>
-      <br>
-
-      <%= f.label :project_id, "プロジェクト名 : " %>
-      <%= f.collection_select :project_id, Project.all, :id, :name, {include_blank: "選択してください"}, class: 'form-control' %>
-
-      <div class="field">
-        <%= f.label :content, "業務内容 : " %>
-        <%= f.text_area :content, placeholder: "業務内容を登録してください。" %>
-      </div>
-
-      <%= f.submit "新規登録", class: "btn btn-primary" %>
-    <% end %>
+    <%= render 'work_info_input_form', { url: "/works/#{@user_id}/#{@date}/new", btn_comment: "新規登録" } %>
   </div>
 </div>
 
