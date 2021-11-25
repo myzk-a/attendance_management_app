@@ -59,7 +59,7 @@ class UsersController < ApplicationController
   end
 
   def import
-    load_csv(User, users_url, signup_url)
+    load_csv(User, users_url, signup_url, ["name", "email"])
   end
 
   private

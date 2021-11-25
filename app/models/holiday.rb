@@ -10,34 +10,14 @@ class Holiday < ApplicationRecord
     where(date: range)
   end
 
-  def self.import(file)
-    encoding = set_encoding(file)
-    return "all_invalid" if encoding.nil?
-    saved     = false
-    all_saved = true
-    CSV.foreach(file.path, encoding: encoding, headers: true, nil_value: "") do |row|
+  private
+
+    def self.update_attributes(row)
+      input_params = row.to_hash.slice("name", "date")
       #pattern : yyyy/mm/dd
       pattern = /\d{4}\/\d{1,2}\/\d{1,2}/
-      if row["name"].present? && row["date"].present? && row["date"].match(pattern)
-        holiday = new
-        # CSVからデータを取得し、設定する
-        holiday.name = row["name"]
-        holiday.date = row["date"].to_date unless row["date"].blank?
-        # 保存する
-        if holiday.save
-          saved = true
-        else
-          all_saved = false
-        end
-      end
+      row["date"].match(pattern) ? input_params["date"] = row["date"].to_date : input_params["date"] = ""
+      return input_params
     end
-    if all_saved && saved
-      return "all_saved"
-    elsif saved
-      return "some_are_invalid"
-    else
-      return "all_invalid"
-    end
-  end
 
 end

@@ -48,7 +48,7 @@ class HolidaysController < ApplicationController
   end
 
   def import
-    load_csv(Holiday, holidays_url, holidays_signup_url)
+    load_csv(Holiday, holidays_url, holidays_signup_url, ["name", "date"])
   end
 
 

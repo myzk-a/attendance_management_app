@@ -13,4 +13,40 @@ class ApplicationRecord < ActiveRecord::Base
       return encoding
     end
 
+    def self.header_is_valid?(row, attributes)
+      valid = true
+      attributes.each do |attribute|
+        valid = false if row[attribute].blank?
+      end
+      return valid
+    end
+
+    def self.import(file, attributes)
+      encoding = set_encoding(file)
+      return "all_invalid" if encoding.nil?
+      saved     = false
+      all_saved = true
+      CSV.foreach(file.path, encoding: encoding, headers: true, nil_value: "") do |row|
+        if header_is_valid?(row, attributes)
+          instance = new
+          # CSVからデータを取得し、設定する
+          instance.attributes = update_attributes(row)
+
+          # 保存する
+          if instance.save
+            saved = true
+          else
+            all_saved = false
+          end
+        end
+      end
+      if all_saved && saved
+        return "all_saved"
+      elsif saved
+        return "some_are_invalid"
+      else
+        return "all_invalid"
+      end
+  end
+
 end

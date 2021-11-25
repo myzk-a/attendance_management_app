@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-    def load_csv(model, success_redirect_url, failure_redirect_url)
+    def load_csv(model, success_redirect_url, failure_redirect_url, attributes)
     if params[:file].blank?
       flash[:danger] = "ファイルを選択してください。"
       redirect_to failure_redirect_url
@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
       flash[:danger] = "拡張子が不正です。csvファイルを選択してください。"
       redirect_to failure_redirect_url
     else
-      result = model.import(params[:file])
+      result = model.import(params[:file], attributes)
       if result == "all_saved"
         flash[:success] = "登録しました。"
         redirect_to success_redirect_url

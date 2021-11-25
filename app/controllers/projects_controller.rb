@@ -46,7 +46,7 @@ class ProjectsController < ApplicationController
   end
 
   def import
-    load_csv(Project, projects_url, projects_signup_url)
+    load_csv(Project, projects_url, projects_signup_url, ["name", "code"])
   end
 
   private
