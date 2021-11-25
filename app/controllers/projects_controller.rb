@@ -46,25 +46,7 @@ class ProjectsController < ApplicationController
   end
 
   def import
-    if params[:file].blank?
-      flash[:danger] = "ファイルを選択してください。"
-      redirect_to projects_signup_url
-    elsif File.extname(params[:file].original_filename) != ".csv"
-      flash[:danger] = "拡張子が不正です。csvファイルを選択してください。"
-      redirect_to projects_signup_url
-    else
-      result = Project.import(params[:file])
-      if result == "all_saved"
-        flash[:success] = "登録しました。"
-        redirect_to projects_url
-      elsif result == "some_are_invalid"
-        flash[:danger] = "一部不正なデータがありました。正しいデータのみ登録しました。"
-        redirect_to projects_url
-      else
-        flash[:danger] = "登録に失敗しました。データが不正です。"
-        redirect_to projects_signup_url
-      end
-    end
+    load_csv(Project, projects_url, projects_signup_url)
   end
 
   private
