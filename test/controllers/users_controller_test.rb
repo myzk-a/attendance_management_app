@@ -9,10 +9,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     @nonadmin_user  = users(:BUTYO)
     @nonadmin_user2 = users(:KATYO)
   end
-  
-  test "should redirect index when not logged in" do
+
+  test "should get index when logged in admin user" do
+    log_in_as(@admin_user)
     get users_path
-    assert_redirected_to login_url
+    assert_template 'users/index'
+    assert_response :success
   end
   
   test "should get new" do
@@ -33,6 +35,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get user_path(@nonadmin_user)
     assert_response :success
     assert_template 'users/show'
+  end
+
+  test "should redirect index when not logged in" do
+    get users_path
+    assert_redirected_to login_url
+  end
+
+  test "should redirect index when logged in nonadmin user" do
+    log_in_as(@nonadmin_user)
+    get users_path
+    assert_redirected_to root_url
   end
 
   test "should redirect signup when not admin_user" do
