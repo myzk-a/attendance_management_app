@@ -1,0 +1,11 @@
+<%= form_for(@holiday, url: url) do |f| %>
+  <%= render 'shared/error_messages', { input: @holiday } %>
+
+  <%= f.label :name, "休日名" %>
+  <%= f.text_field :name, class: 'form-control' %>
+
+  <%= f.label :date, "日付" %>
+  <%= f.date_field :date, class: 'form-control' %>
+
+  <%= f.submit btn_comment, class: "btn btn-primary" %>
+<% end %>

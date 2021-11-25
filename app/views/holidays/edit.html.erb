@@ -3,16 +3,6 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@holiday, url: "/holidays/#{@holiday.id}/edit") do |f| %>
-      <%= render 'shared/error_messages', {input: @holiday} %>
-
-      <%= f.label :name, "休日名" %>
-      <%= f.text_field :name, class: 'form-control' %>
-
-      <%= f.label :date, "日付" %>
-      <%= f.date_field :date, class: 'form-control' %>
-
-      <%= f.submit "保存", class: "btn btn-primary" %>
-    <% end %>
+    <%= render 'holiday_info_input_form', { url: edit_holiday_path(@holiday), btn_comment: "保存" } %>
   </div>
 </div>
