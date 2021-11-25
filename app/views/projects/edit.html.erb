@@ -3,16 +3,6 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@project, url: "/projects/#{@project.id}/edit") do |f| %>
-      <%= render 'shared/error_messages', {input: @project} %>
-
-      <%= f.label :name, "プロジェクト名" %>
-      <%= f.text_field :name, class: 'form-control', readonly: true %>
-
-      <%= f.label :code, "プロジェクトコード" %>
-      <%= f.text_field :code, class: 'form-control' %>
-
-      <%= f.submit "保存", class: "btn btn-primary" %>
-    <% end %>
+    <%= render 'project_info_input_form', { url: edit_project_path(@project), btn_comment: "保存", project_name_is_read_only: true } %>
   </div>
 </div>

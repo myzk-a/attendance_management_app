@@ -3,19 +3,9 @@
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <%= form_for(@project, url: projects_signup_path) do |f| %>
-      <%= render 'shared/error_messages', {input: @project} %>
+    <%= render 'project_info_input_form', { url: projects_signup_path, btn_comment: "登録", project_name_is_read_only: false } %>
 
-      <%= f.label :name, "プロジェクト名" %>
-      <%= f.text_field :name, class: 'form-control' %>
-
-      <%= f.label :code, "プロジェクトコード" %>
-      <%= f.text_field :code, class: 'form-control' %>
-
-      <%= f.submit "登録", class: "btn btn-primary" %>
-    <% end %>
-
-     <%= render 'shared/load_csv', { url: import_projects_path,
+    <%= render 'shared/load_csv', { url: import_projects_path,
                                      explain: "(ヘッダーに「name」と「code」を設定してください。)" } %>
 
   </div>

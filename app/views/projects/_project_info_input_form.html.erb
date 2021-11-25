@@ -1,0 +1,11 @@
+<%= form_for(@project, url: url) do |f| %>
+  <%= render 'shared/error_messages', { input: @project } %>
+
+  <%= f.label :name, "プロジェクト名" %>
+  <%= f.text_field :name, class: 'form-control', readonly: project_name_is_read_only %>
+
+  <%= f.label :code, "プロジェクトコード" %>
+  <%= f.text_field :code, class: 'form-control' %>
+
+  <%= f.submit btn_comment, class: "btn btn-primary" %>
+<% end %>
