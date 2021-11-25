@@ -6,7 +6,8 @@
     <%= render 'project_info_input_form', { url: projects_signup_path, btn_comment: "登録", project_name_is_read_only: false } %>
 
     <%= render 'shared/load_csv', { url: import_projects_path,
-                                     explain: "(ヘッダーに「name」と「code」を設定してください。)" } %>
+                                    example_image: "projects_csv_example.PNG",
+                                    size: "200x100" } %>
 
   </div>
 </div>

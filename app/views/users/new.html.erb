@@ -6,6 +6,7 @@
     <%= render 'user_info_input_form', {url: signup_path, btn_comment: "登録"} %>
 
     <%= render 'shared/load_csv', { url: import_users_path,
-                                    explain: "(ヘッダーには「name」と「email」を設定してください。)" } %>
+                                    example_image: "users_csv_example.PNG",
+                                    size: "300x100" } %>
   </div>
 </div>

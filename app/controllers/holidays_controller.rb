@@ -71,7 +71,7 @@ class HolidaysController < ApplicationController
     def set_pull_down_list
       @years = []
       year = Time.zone.now.year
-      (-3..0).each do |diff|
+      (-3..1).each do |diff|
         y = year + diff
         @years.push([y.to_s+"年", y.to_s])
       end

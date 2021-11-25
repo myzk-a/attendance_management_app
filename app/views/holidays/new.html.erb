@@ -6,8 +6,8 @@
     <%= render 'holiday_info_input_form', { url: holidays_signup_path, btn_comment: "登録" } %>
 
     <%= render 'shared/load_csv', { url: import_holidays_path,
-                                    explain: "(ヘッダーに「name」と「date」を設定してください。
-                                               また、日付は「2021/1/1」のように記述してください。)" } %>
+                                    example_image: "holidays_csv_example.PNG",
+                                    size: "200x100" } %>
 
   </div>
 </div>
