@@ -17,6 +17,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     assert_select "div#error_explanation"
     assert_template 'users/new'
+    assert_match "type=\"password\"", response.body
   end
   
   test "valid signup information" do
@@ -80,6 +81,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_not flash[:danger].empty?
     assert flash[:success].blank?
     assert_template 'users/new'
+    assert_match "type=\"password\"", response.body
   end
 
   test "invalid sign up information when not selected csv file" do
@@ -94,6 +96,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_not flash[:danger].empty?
     assert flash[:success].blank?
     assert_template 'users/new'
+    assert_match "type=\"password\"", response.body
   end
 
 end

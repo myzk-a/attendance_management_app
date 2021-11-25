@@ -1,0 +1,26 @@
+<%= form_for(@user, url: url) do |f| %>
+  <%= render 'shared/error_messages', {input: @user} %>
+  
+  <%= f.label :name, "ユーザー名" %>
+  <%= f.text_field :name, class: 'form-control', readonly: @is_name_read_only %>
+
+  <%= f.label :email, "メールアドレス" %>
+  <%= f.email_field :email, class: 'form-control', readonly: @is_email_read_only %>
+  
+  <% if @input_password %>
+    <%= f.label :password, "パスワード" %>
+    <%= f.password_field :password, class: 'form-control' %>
+
+    <%= f.label :password_confirmation, "パスワード確認" %>
+    <%= f.password_field :password_confirmation, class: 'form-control' %>
+  <% end %>
+
+  <% if @reset_password %>
+    <%= f.label :password_reset, class: "checkbox inline" do %>
+      <%= f.check_box :password_reset %>
+      <span>パスワードを初期化する</span>
+    <% end %>
+  <% end %>
+
+  <%= f.submit btn_comment, class: "btn btn-primary" %>
+<% end %>

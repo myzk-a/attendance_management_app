@@ -13,14 +13,46 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     get edit_user_path(@user)
     assert_template 'users/edit'
+    assert_match "type=\"password\"", response.body
+    assert_select "label.checkbox.inline", count: 0
     patch user_path(@user), params: { user: { name:  "",
                                               email: "foo@invalid",
                                               password:              "foo",
                                               password_confirmation: "bar" } }
 
     assert_template 'users/edit'
+    assert_match "type=\"password\"", response.body
   end
-  
+
+  test "unsuccessful edit other user as admin user" do
+    log_in_as(@admin_user)
+    get edit_user_path(@nonadmin_user)
+    assert_template 'users/edit'
+    assert_select "label.checkbox.inline", count: 1
+    patch user_path(@nonadmin_user), params: { user: { name: "",
+                                                       email: "",
+                                                       password:              "",
+                                                       password_confirmation: "" } }
+    assert_template 'users/edit'
+    assert_select "div#error_explanation"
+    assert_select "label.checkbox.inline", count: 1
+  end
+
+  test "unsuccessful edit myself as admin user" do
+    log_in_as(@admin_user)
+    get edit_user_path(@admin_user)
+    assert_template 'users/edit'
+    assert_match "type=\"password\"", response.body
+    assert_select "label.checkbox.inline", count: 0
+    patch user_path(@admin_user), params: { user: { name: "",
+                                                    email: "",
+                                                    password: "",
+                                                    password_confirmation: "" } }
+    assert_template 'users/edit'
+    assert_select "div#error_explanation"
+    assert_match "type=\"password\"", response.body
+  end
+
   test "edit other_user as admin_user" do
     log_in_as(@admin_user)
     get edit_user_path(@nonadmin_user)

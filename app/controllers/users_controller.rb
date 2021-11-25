@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   
   def new
     @user = User.new
+    set_new_page_form_is_indicate
   end
   
   def create
@@ -25,14 +26,15 @@ class UsersController < ApplicationController
       flash[:success] = "ユーザーを登録しました。"
       redirect_to @user
     else
+      set_new_page_form_is_indicate
       render 'new'
     end
   end
   
   def edit
     @user = User.find_by(id: params[:id])
-    set_is_read_only
     set_edit_page_title
+    set_edit_page_form_is_indicate
   end
   
   def update
@@ -41,8 +43,8 @@ class UsersController < ApplicationController
       flash[:success] = "設定を変更しました"
       redirect_to @user
     else
-      set_is_read_only
       set_edit_page_title
+      set_edit_page_form_is_indicate
       render 'edit'
     end
   end
@@ -103,7 +105,19 @@ class UsersController < ApplicationController
       end
     end
 
-    def set_is_read_only
+    def set_edit_page_title
+      if current_user.admin?
+        if current_user.id == @user.id
+          @title = "設定の変更"
+        else
+          @title = "ユーザー名の変更"
+        end
+      else
+        @title = "パスワードの変更"
+      end
+    end
+
+    def set_edit_page_form_is_indicate
       if current_user.admin?
         if current_user.id == @user.id
           @is_name_read_only  = true
@@ -116,18 +130,15 @@ class UsersController < ApplicationController
         @is_name_read_only  = true
         @is_email_read_only = true
       end
+      current_user?(@user) ? @input_password = true : @input_password = false
+      (current_user.admin? && @user.id != current_user.id) ? @reset_password = true : @reset_password = false
     end
 
-    def set_edit_page_title
-      if current_user.admin?
-        if current_user.id == @user.id
-          @title = "設定の変更"
-        else
-          @title = "ユーザー名の変更"
-        end
-      else
-        @title = "パスワードの変更"
-      end
+    def set_new_page_form_is_indicate
+      @is_name_read_only = false
+      @is_email_read_only = false
+      @input_password = true
+      @reset_password = false
     end
 
     # beforeアクション
