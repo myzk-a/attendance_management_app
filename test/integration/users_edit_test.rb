@@ -80,7 +80,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     patch user_path(@nonadmin_user2), params: { user: { password_reset: "1" }}
     assert_not flash.empty?
     @nonadmin_user2.reload
-    assert @nonadmin_user2.authenticate("password")
+    assert @nonadmin_user2.authenticate(ENV.fetch("USER_DEFAULT_PASSWORD"){""})
   end
 
   test "edit myself as admin_user" do

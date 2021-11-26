@@ -47,8 +47,8 @@ class User < ApplicationRecord
 
     def self.update_attributes(row)
       input_params = row.to_hash.slice("name", "email")
-      input_params["password"]              = "password"
-      input_params["password_confirmation"] = "password"
+      input_params["password"]              = ENV.fetch("USER_DEFAULT_PASSWORD"){""}
+      input_params["password_confirmation"] = ENV.fetch("USER_DEFAULT_PASSWORD"){""}
       return input_params
     end
 
