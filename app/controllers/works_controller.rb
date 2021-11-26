@@ -5,6 +5,7 @@ class WorksController < ApplicationController
   before_action :logged_in_user
   before_action :admin_user, only: [:show, :search]
   before_action :correct_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :correct_date, only: [:new, :create, :show]
   before_action :set_pull_down_list_for_time_input
   before_action :set_instance_variables_by_user_id_and_day, only: [:new, :create, :show]
   before_action :set_instance_variables_by_work_id, only: [:edit, :update, :destroy]
@@ -190,6 +191,12 @@ class WorksController < ApplicationController
       end
       user = User.find_by(id: @user_id)
       redirect_to root_url unless current_user?(user)
+    end
+
+    def correct_date
+      date = Time.zone.parse(params[:date]).to_date
+      today = Time.zone.now.to_date
+      redirect_to root_url if date > today
     end
 
 end
