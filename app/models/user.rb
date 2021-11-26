@@ -8,7 +8,7 @@ class User < ApplicationRecord
   
   validates :name,  presence: true, length: {maximum: 20}
   
-  VALID_EMAIL_REGEX = /\A[a-z\d]+_+[a-z]+@as-mobi\.com+\z/
+  VALID_EMAIL_REGEX = /#{ENV.fetch("VALID_EMAIL_REGEX"){""}}/
   validates :email, presence: true, length: {maximum: 255}, format: {with: VALID_EMAIL_REGEX}, uniqueness: true
   
   has_secure_password
