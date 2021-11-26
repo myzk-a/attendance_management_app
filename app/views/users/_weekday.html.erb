@@ -1,12 +1,12 @@
 <%= date.day %>
 <% if works.empty? %>
   <div>
-    <% if Time.zone.now > date %>
+    <% if Time.zone.now.to_date >= date %>
       <span class="unregistered">未登録</span>
     <% else %>
       <span class="normal">未登録</span>
     <% end %>
-    <% if !current_user.admin? && Time.zone.now.to_date > date %>
+    <% if !current_user.admin? && Time.zone.now.to_date >= date %>
       <%= " / "%><%= link_to "登録する", "/works/#{@user.id}/#{date}/new" %>
     <% end %>
   </div>
