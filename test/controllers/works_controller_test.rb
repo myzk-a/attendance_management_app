@@ -63,6 +63,12 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test "should redirect new when logged in correct user and get new tommorw" do
+    log_in_as(@butyo)
+    get "/works/#{@butyo.id}/#{@today + 1}/new"
+    assert_redirected_to root_url
+  end
+
   test "should redirect show when not logged in" do
     get "/works/#{@butyo.id}/#{@today}"
     assert_redirected_to login_url
@@ -71,6 +77,12 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
   test "should redirect show when logged in nonadmin user" do
     log_in_as(@butyo)
     get "/works/#{@butyo.id}/#{@today}"
+    assert_redirected_to root_url
+  end
+
+  test "should redirect show when logged in admin user and get show tomorrow" do
+    log_in_as(@admin_user)
+    get "/works/#{@butyo.id}/#{@today + 1}"
     assert_redirected_to root_url
   end
 
@@ -121,6 +133,20 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
                                                                   end_minutes:   "30",
                                                                   project_id:    @project.id,
                                                                   content:       "test" } }
+    end
+    assert_redirected_to root_url
+  end
+
+  test "should redirect create when logged in correct user and create tommorow" do
+    log_in_as(@butyo)
+    assert_no_difference 'Work.count' do
+      post "/works/#{@butyo.id}/#{@today + 1}/new", params: { work: { user_id:       @butyo.id,
+                                                                      start_hours:   "9",
+                                                                      start_minutes: "0",
+                                                                      end_hours:     "12",
+                                                                      end_minutes:   "30",
+                                                                      project_id:    @project.id,
+                                                                      content:       "test" } }
     end
     assert_redirected_to root_url
   end
