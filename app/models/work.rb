@@ -3,17 +3,19 @@ class Work < ApplicationRecord
   attr_accessor :start_minutes
   attr_accessor :end_hours
   attr_accessor :end_minutes
+
   default_scope -> { order(:start_time) }
 
-  validates :user_id,      presence: true
-  validates :user_name,    presence: true
-  validates :start_time,   presence: true, work_period: true
-  validates :end_time,     presence: true, work_period: true
+  before_save { self.user_name_no_blank = user_name.gsub(/(\s|　)+/, '') }
+
+  validates :user_id,    presence: true
+  validates :user_name,  presence: true
+  validates :start_time, presence: true, work_period: true
+  validates :end_time,   presence: true, work_period: true
+  validates :project_id, presence: true
+  validates :content,    presence: true, length: {maximum: 30}
   validate  :time_integrity
   validate  :minutes_integrity
-  validates :project_id,   presence: true
-  validates :content,      presence: true, length: {maximum: 30}
-
   #バリデーションメソッド
   def time_integrity
     return if start_time.blank? || end_time.blank?
@@ -45,7 +47,10 @@ class Work < ApplicationRecord
     if user_name_pull_down.present?
       where(user_name: user_name_pull_down)
     else
-      where('user_name LIKE ?', "%#{user_name}") if user_name.present?
+      if user_name.present?
+        user_name.gsub!(/(\s|　)+/, '')
+        where('user_name_no_blank LIKE ?', "%#{user_name}")
+      end
     end
   end
 

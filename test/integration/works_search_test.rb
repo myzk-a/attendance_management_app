@@ -5,6 +5,7 @@ class WorksSearchTest < ActionDispatch::IntegrationTest
     @admin_user = users(:SYATYO)
     @butyo      = users(:BUTYO)
     @syunin     = users(:SYUNIN)
+    @syain1     = users(:user_1)
     @project_x  = projects(:X)
     @project_y  = projects(:Y)
     set_works
@@ -56,7 +57,7 @@ class WorksSearchTest < ActionDispatch::IntegrationTest
     assert_match "<td>#{@project_y.code}</td>", response.body
   end
 
-  test "search by name" do
+  test "search by name pull down" do
     log_in_as(@admin_user)
     get works_search_path
     assert_template "works/search"
@@ -84,6 +85,81 @@ class WorksSearchTest < ActionDispatch::IntegrationTest
     assert_match    "<td>#{@project_x.code}</td>", response.body
     assert_match    "<td>#{@project_y.name}</td>", response.body
     assert_match    "<td>#{@project_y.code}</td>", response.body
+  end
+
+  test "search by name include half width space" do
+    log_in_as(@admin_user)
+    get works_search_path
+    assert_template "works/search"
+    assert_no_match "抽出結果", response.body
+    get works_search_path, params: { search: { searching: true,
+                                               year: "",
+                                               month: "",
+                                               user_name_pull_down: "",
+                                               user_name: "部 長",
+                                               project_name_pull_down: "",
+                                               project_name: "" } }
+    assert_match "4時間0分", response.body
+    assert_select "table"
+    assert_match    "11月20日", response.body
+    assert_match    "12月20日", response.body
+    assert_match    "11月21日", response.body
+    assert_match    "12月21日", response.body
+    assert_no_match "11月22日", response.body
+    assert_no_match "12月22日", response.body
+    assert_no_match "11月23日", response.body
+    assert_no_match "12月23日", response.body
+    assert_match    "<td>#{@butyo.name}</td>",     response.body
+    assert_no_match "<td>#{@syunin.name}</td>",    response.body
+    assert_match    "<td>#{@project_x.name}</td>", response.body
+    assert_match    "<td>#{@project_x.code}</td>", response.body
+    assert_match    "<td>#{@project_y.name}</td>", response.body
+    assert_match    "<td>#{@project_y.code}</td>", response.body
+  end
+
+  test "search by name include full width space" do
+    log_in_as(@admin_user)
+    get works_search_path
+    assert_template "works/search"
+    assert_no_match "抽出結果", response.body
+    get works_search_path, params: { search: { searching: true,
+                                               year: "",
+                                               month: "",
+                                               user_name_pull_down: "",
+                                               user_name: "部　長",
+                                               project_name_pull_down: "",
+                                               project_name: "" } }
+    assert_match "4時間0分", response.body
+    assert_select "table"
+    assert_match    "11月20日", response.body
+    assert_match    "12月20日", response.body
+    assert_match    "11月21日", response.body
+    assert_match    "12月21日", response.body
+    assert_no_match "11月22日", response.body
+    assert_no_match "12月22日", response.body
+    assert_no_match "11月23日", response.body
+    assert_no_match "12月23日", response.body
+    assert_match    "<td>#{@butyo.name}</td>",     response.body
+    assert_no_match "<td>#{@syunin.name}</td>",    response.body
+    assert_match    "<td>#{@project_x.name}</td>", response.body
+    assert_match    "<td>#{@project_x.code}</td>", response.body
+    assert_match    "<td>#{@project_y.name}</td>", response.body
+    assert_match    "<td>#{@project_y.code}</td>", response.body
+  end
+
+  test "search by name without space" do
+    log_in_as(@admin_user)
+    get works_search_path
+    assert_template "works/search"
+    assert_no_match "抽出結果", response.body
+    get works_search_path, params: { search: { searching: true,
+                                               year: "",
+                                               month: "",
+                                               user_name_pull_down: "",
+                                               user_name: "社員1",
+                                               project_name_pull_down: "",
+                                               project_name: "" } }
+    assert_match    "<td>#{@syain1.name}</td>",     response.body
   end
 
   test "search by project" do
@@ -181,6 +257,7 @@ class WorksSearchTest < ActionDispatch::IntegrationTest
     def set_works
       butyo     = users(:BUTYO)
       syunin    = users(:SYUNIN)
+      syain1    = users(:user_1)
       project_x = projects(:X)
       project_y = projects(:Y)
       #部長の工数
@@ -249,6 +326,15 @@ class WorksSearchTest < ActionDispatch::IntegrationTest
                    content:      "主任、プロジェクトY、12月",
                    start_time:   Time.zone.parse('2021-12-23 9:00:00'),
                    end_time:     Time.zone.parse('2021-12-23 9:30:00') )
+      #社員1の工数
+      Work.create( user_id:      syain1.id,
+                   user_name:    syain1.name,
+                   project_id:   project_y.id,
+                   project_name: project_y.name,
+                   project_code: project_y.code,
+                   content:      "社員1、プロジェクトY、10月",
+                   start_time:   Time.zone.parse('2021-10-23 9:00:00'),
+                   end_time:     Time.zone.parse('2021-10-23 9:30:00') )
     end
 
 end

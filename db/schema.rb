@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20211118013143) do
+ActiveRecord::Schema.define(version: 20211125225424) do
 
   create_table "holidays", force: :cascade do |t|
     t.string "name"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20211118013143) do
     t.datetime "updated_at", null: false
     t.string "project_name"
     t.string "project_code"
+    t.string "user_name_no_blank"
   end
 
 end
