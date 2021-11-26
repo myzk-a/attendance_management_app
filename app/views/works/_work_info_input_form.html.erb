@@ -3,7 +3,7 @@
   
   <%= f.hidden_field :user_id, value: @user_id %>
   
-  <span class="work_time"><%= "開始時刻 : "%></span>
+  <span class="work_time"><%= "開始時刻"%></span>
   <br>
   <%= f.select :start_hours, @hours, {include_blank: "選択して下さい", selected: @s_hour}, class: "form_date_select" %>
   <span class="work_time"><%= " 時 " %></span>
@@ -11,7 +11,7 @@
   <span class="work_time"><%= " 分～ " %></span>
   <br>
 
-  <span class="work_time"><%= "終了時刻 : "%></span>
+  <span class="work_time"><%= "終了時刻"%></span>
   <br>
   <%= f.select :end_hours, @hours, {include_blank: "選択して下さい", selected: @e_hour}, class: "form_date_select" %>
   <span class="work_time"><%= " 時 " %></span>
@@ -19,11 +19,11 @@
   <span class="work_time"><%= " 分 " %></span>
   <br>
 
-  <%= f.label :project_id, "プロジェクト名 : " %>
+  <%= f.label :project_id %>
   <%= f.collection_select :project_id, Project.all, :id, :name, {include_blank: "選択してください"}, class: 'form-control' %>
 
   <div class="field">
-    <%= f.label :content, "業務内容 : " %>
+    <%= f.label :content %>
     <%= f.text_area :content, placeholder: "業務内容を登録してください。" %>
   </div>
 
