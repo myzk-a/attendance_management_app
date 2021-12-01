@@ -5,15 +5,11 @@ class WorksEditTest < ActionDispatch::IntegrationTest
     @butyo   = users(:BUTYO)
     @today   = DateTime.now.to_date
     @project = projects(:X)
-    Work.create( user_id:      @butyo.id,
-                 user_name:    @butyo.name,
-                 project_id:   @project.id,
-                 project_name: @project.name,
-                 project_code: @project.code,
-                 content:      "テストコード作成",
-                 start_time:   Time.zone.parse('2021-11-23 15:15:12'),
-                 end_time:     Time.zone.parse('2021-11-23 16:15:12'))
-    @work = Work.first
+    @butyo.works.create!( project_id: @project.id,
+                          content:    "テストコード作成",
+                          start_time: Time.zone.parse('2021-11-23 15:15:12'),
+                          end_time:   Time.zone.parse('2021-11-23 16:15:12'))
+    @work = @butyo.works.first
   end
 
   test "successful edit" do
@@ -23,13 +19,12 @@ class WorksEditTest < ActionDispatch::IntegrationTest
     assert_match "編集中", response.body
     project = projects(:Y)
     content = "テストコード修正"
-    patch "/works/#{@work.id}/edit", params: { work: { user_id:       @butyo.id,
-                                                       start_hours:   "14",
-                                                       start_minutes: "30",
-                                                       end_hours:     "17",
-                                                       end_minutes:   "15",
-                                                       project_id:    project.id,
-                                                       content:       content } }
+    start_time = Time.zone.parse(@work.start_time.to_date.to_s + " " + "14:30:00")
+    end_time   = Time.zone.parse(@work.start_time.to_date.to_s + " " + "17:15:00")
+    patch "/works/#{@work.id}/edit", params: { work: { start_time: start_time,
+                                                       end_time:   end_time,
+                                                       project_id: project.id,
+                                                       content:    content } }
     @work.reload
     assert_equal project.id,   @work.project_id
     assert_equal project.name, @work.project_name
@@ -52,13 +47,12 @@ class WorksEditTest < ActionDispatch::IntegrationTest
     assert_match "編集中", response.body
     project = projects(:Y)
     content = "テストコード修正"
-    patch "/works/#{@work.id}/edit", params: { work: { user_id:       @butyo.id,
-                                                       start_hours:   "14",
-                                                       start_minutes: "30",
-                                                       end_hours:     "13",
-                                                       end_minutes:   "15",
-                                                       project_id:    project.id,
-                                                       content:       content } }
+    start_time = Time.zone.parse(@work.start_time.to_date.to_s + " " + "14:30:00")
+    end_time   = Time.zone.parse(@work.start_time.to_date.to_s + " " + "13:15:00")
+    patch "/works/#{@work.id}/edit", params: { work: { start_time: start_time,
+                                                       end_time:   end_time,
+                                                       project_id: project.id,
+                                                       content:    content } }
     assert_select "div#error_explanation"
     assert_template "works/edit"
     @work.reload

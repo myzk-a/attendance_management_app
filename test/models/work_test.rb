@@ -5,14 +5,10 @@ class WorkTest < ActiveSupport::TestCase
     @user    = users(:BUTYO)
     @user2   = users(:SYUNIN)
     @project = projects(:X)
-    @work    = Work.new( user_id:      @user.id,
-                         user_name:    @user.name,
-                         project_id:   @project.id,
-                         project_name: @project.name,
-                         project_code: @project.code,
-                         content:      "加減速制御モデルの開発",
-                         start_time:   Time.zone.parse('2021-11-23 15:15:12'),
-                         end_time:     Time.zone.parse('2021-11-23 15:45:34') )
+    @work    = @user.works.build( project_id: @project.id,
+                                  content:    "加減速制御モデルの開発",
+                                  start_time: Time.zone.parse('2021-11-23 15:15:12'),
+                                  end_time:   Time.zone.parse('2021-11-23 15:45:34') )
   end
 
   test "should be valid" do
@@ -21,11 +17,6 @@ class WorkTest < ActiveSupport::TestCase
 
   test "user_id should be present" do
     @work.user_id = " ";
-    assert_not @work.valid?
-  end
-
-  test "user_name should be present" do
-    @work.user_name = " "
     assert_not @work.valid?
   end
 

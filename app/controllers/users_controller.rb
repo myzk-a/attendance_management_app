@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
-    @works = Work.where(user_id: @user.id)
+    @works = @user.works
   end
   
   def new

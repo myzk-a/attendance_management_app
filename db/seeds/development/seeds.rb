@@ -20,40 +20,16 @@ end
   Project.create!(name: name, code: code)
 end
 
-user = User.find_by(id: 2)
+user_1  = User.find_by(id: 2)
 project = Project.first
-Work.create!(user_id:      user.id,
-             user_name:    user.name,
-             project_id:   project.id,
-             project_name: project.name,
-             project_code: project.code,
-             content:      "制御開発",
-             start_time:   Time.zone.parse('2021-11-15 15:30:00'),
-             end_time:     Time.zone.parse('2021-11-15 15:45:00'))
+user_1.works.create!( project_id:   project.id,
+                     content:      "制御開発",
+                     start_time:   Time.zone.parse('2021-11-15 15:30:00'),
+                     end_time:     Time.zone.parse('2021-11-15 15:45:00'))
 
-Work.create!(user_id:      user.id,
-             user_name:    user.name,
-             project_id:   project.id,
-             project_name: project.name,
-             project_code: project.code,
-             content:      "制御開発",
-             start_time:   Time.zone.parse('2021-11-15 8:30:00'),
-             end_time:     Time.zone.parse('2021-11-15 10:30:00'))
-
-Work.create!(user_id:      user.id,
-             user_name:    user.name,
-             project_id:   project.id,
-             project_name: project.name,
-             project_code: project.code,
-             content:      "物体検出機能の開発",
-             start_time:   Time.zone.parse('2021-11-16 10:30:00'),
-             end_time:     Time.zone.parse('2021-11-16 11:30:00'))
-
-Work.create!(user_id:      user.id,
-             user_name:    user.name,
-             project_id:   project.id,
-             project_name: project.name,
-             project_code: project.code,
-             content:      "制御開発",
-             start_time:   Time.zone.parse('2021-11-8 15:30:00'),
-             end_time:     Time.zone.parse('2021-11-8 16:30:00'))
+user_2  = User.find_by(id: 3)
+project = Project.first
+user_2.works.create!( project_id:   project.id,
+                      content:      "制御開発",
+                      start_time:   Time.zone.parse('2021-11-15 15:30:00'),
+                      end_time:     Time.zone.parse('2021-11-15 15:45:00'))

@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :works
+
   attr_accessor :remember_token
   attr_accessor :password_reset
 

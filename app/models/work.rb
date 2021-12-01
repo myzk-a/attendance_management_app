@@ -1,18 +1,14 @@
 class Work < ApplicationRecord
-  attr_accessor :start_hours
-  attr_accessor :start_minutes
-  attr_accessor :end_hours
-  attr_accessor :end_minutes
-
+  belongs_to :user
+  belongs_to :project
   default_scope -> { order(:start_time) }
 
-  before_save { self.user_name_no_blank = user_name.gsub(/(\s|　)+/, '') }
+  before_save :set_project_name_and_project_code
+  before_save :set_user_name
 
   validates :user_id,    presence: true
-  validates :user_name,  presence: true
   validates :start_time, presence: true, work_period: true
   validates :end_time,   presence: true, work_period: true
-  validates :project_id, presence: true
   validates :content,    presence: true, length: {maximum: 30}
   validate  :time_integrity
   validate  :minutes_integrity
@@ -26,6 +22,18 @@ class Work < ApplicationRecord
     return if start_time.blank? || end_time.blank?
     errors.add(:start_time, "は15分刻みで入力してください") if start_time.min % 15 != 0
     errors.add(:end_time,   "は15分刻みで入力してください") if end_time.min % 15 != 0
+  end
+
+
+  #before_saveアクション
+  def set_project_name_and_project_code
+    self.project_name = project.name
+    self.project_code = project.code
+  end
+
+  def set_user_name
+    self.user_name = user.name
+    self.user_name_no_blank = user.name.gsub(/(\s|　)+/, '')
   end
 
   scope :search, -> (search_params) do

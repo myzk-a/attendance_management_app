@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20211125225424) do
+ActiveRecord::Schema.define(version: 20211201022634) do
 
   create_table "holidays", force: :cascade do |t|
     t.string "name"
@@ -38,9 +38,7 @@ ActiveRecord::Schema.define(version: 20211125225424) do
   end
 
   create_table "works", force: :cascade do |t|
-    t.integer "user_id"
     t.string "user_name"
-    t.integer "project_id"
     t.text "content"
     t.datetime "start_time"
     t.datetime "end_time"
@@ -49,6 +47,10 @@ ActiveRecord::Schema.define(version: 20211125225424) do
     t.string "project_name"
     t.string "project_code"
     t.string "user_name_no_blank"
+    t.integer "user_id"
+    t.integer "project_id"
+    t.index ["project_id"], name: "index_works_on_project_id"
+    t.index ["user_id"], name: "index_works_on_user_id"
   end
 
 end

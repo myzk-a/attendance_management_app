@@ -15,6 +15,7 @@ ja:
         name: プロジェクト名
         code: プロジェクトコード
       work:
+        project: プロジェクト名
         project_id: プロジェクト名
         content: 業務内容
         start_time: 開始時刻

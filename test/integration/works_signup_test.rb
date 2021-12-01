@@ -3,7 +3,7 @@ require 'test_helper'
 class WorksSignupTest < ActionDispatch::IntegrationTest
   def setup
     @butyo   = users(:BUTYO)
-    @today   = DateTime.now.to_date
+    @today   = Time.zone.parse('2021-11-23 15:15:12').to_date
     @project = projects(:X)
   end
 
@@ -12,13 +12,10 @@ class WorksSignupTest < ActionDispatch::IntegrationTest
     get "/works/#{@butyo.id}/#{@today}/new"
     assert_template "works/new"
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { user_id:       "",
-                                                                  start_hours:   "",
-                                                                  start_minutes: "",
-                                                                  end_hours:     "",
-                                                                  end_minutes:   "",
-                                                                  project_id:    "",
-                                                                  content:       "" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: "",
+                                                                  end_time:   "",
+                                                                  project_id: "",
+                                                                  content:    "" } }
     end
     assert_select "div#error_explanation"
     assert_template "works/new"
@@ -28,18 +25,18 @@ class WorksSignupTest < ActionDispatch::IntegrationTest
     log_in_as(@butyo)
     get "/works/#{@butyo.id}/#{@today}/new"
     assert_template "works/new"
+    start_time = Time.zone.parse('2021-11-23 9:00:00')
+    end_time   = Time.zone.parse('2021-11-23 12:30:00')
     assert_difference 'Work.count', 1 do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { user_id:       @butyo.id,
-                                                                  start_hours:   "9",
-                                                                  start_minutes: "0",
-                                                                  end_hours:     "12",
-                                                                  end_minutes:   "30",
-                                                                  project_id:    @project.id,
-                                                                  content:       "test" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
+                                                                  end_time:   end_time,
+                                                                  project_id: @project.id,
+                                                                  content:    "test" } }
     end
     follow_redirect!
     assert_template "works/new"
     assert_not flash.empty?
+    assert_match @butyo.name, response.body
     assert_match "09時00分", response.body
     assert_match "12時30分", response.body
     assert_match @project.name, response.body
