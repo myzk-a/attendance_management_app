@@ -196,7 +196,8 @@ input {
 
 .form_date_select {
     display: inline-block;
-    width: auto;
+    font-size: 0.5em;
+    width: 70px;
 }
 
 .work_time {
@@ -219,4 +220,8 @@ input {
   .form-control {
     margin-top: 15px;
   }
+}
+
+.works-signup-btn {
+  width: 200px;
 }

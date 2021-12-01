@@ -2,11 +2,59 @@
 
 <h2>工数登録(<%= @date.strftime("%m月%d日") %>)</h2>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= render 'work_info_input_form', { url: "/works/#{@user.id}/#{@date}/new", btn_comment: "新規登録" } %>
+<%= form_with( model: @form, url: "/works/#{@user.id}/#{@date}/new", method: :post, local: true ) do |fb| %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th width="60px">登録</th>
+        <th>開始時刻</th>
+        <th>終了時刻</th>
+        <th>プロジェクト名</th>
+        <th>業務内容</th>
+        <% if @input_has_error.present? %>
+          <th>エラーメッセージ</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% i = 0 %>
+      <%= fb.fields_for :works do |f| %>
+        <%= f.hidden_field :user_id, value: @user.id %>
+        <tr>
+          <td class="text-center">
+            <% unless @form.works[i].errors.any? %>
+              <%= f.check_box :signup, checked: false %>
+            <% else %>
+              <%= f.check_box :signup %>
+            <% end %>
+          </td>
+          <td>
+            <%= f.datetime_select :start_time, { default: @date, discard_year: true, minute_step: 15, datetime_separator: '<p class="fb-txt font-weight-bold my-2"></p>' }, 
+                                                 class: "form-control form_date_select" %>
+          </td>
+          <td>
+            <%= f.datetime_select :end_time, { default: @date, discard_year: true, minute_step: 15, datetime_separator: '<p class="fb-txt font-weight-bold my-2"></p>' }, 
+                                               class: "form-control form_date_select" %>
+          </td>
+          <td>
+            <%= f.collection_select :project_id, Project.all, :id, :name, {include_blank: "選択してください"}, class: 'form-control' %>
+          </td>
+          <td>
+            <%= f.text_area :content, placeholder: "業務内容を登録してください。" %>
+          </td>
+          <% if @input_has_error.present? %>
+            <td><%= render 'shared/error_messages', { input: @form.works[i] } %></td>
+          <% end %>
+          <% i=i+1 %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="text-center">
+  <%= fb.submit '登録', class: 'btn btn-primary works-signup-btn' %>
   </div>
-</div>
+<% end %>
 
 <% unless @works.empty? %>
   <%= render 'works_table' %>

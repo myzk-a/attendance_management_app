@@ -10,6 +10,7 @@ class Work < ApplicationRecord
   validates :start_time, presence: true, work_period: true
   validates :end_time,   presence: true, work_period: true
   validates :content,    presence: true, length: {maximum: 30}
+  validates :signup, inclusion: { in: [true, false] }
   validate  :time_integrity
   validate  :minutes_integrity
   #バリデーションメソッド

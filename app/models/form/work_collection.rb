@@ -1,9 +1,9 @@
 class Form::WorkCollection < Form::Base
-  FORM_COUNT = 5 #ここで、作成したい登録フォームの数を指定
+  FORM_COUNT = 3 #ここで、作成したい登録フォームの数を指定
   attr_accessor :works
 
   def initialize(attributes = {})
-    #super attributes
+    super attributes
     self.works = FORM_COUNT.times.map { Work.new() } unless self.works.present?
   end
 
@@ -12,13 +12,16 @@ class Form::WorkCollection < Form::Base
   end
 
   def save
+    saved = true
     Work.transaction do
       self.works.each do |work|
-        debugger
+        if work.signup
+          unless work.save
+            saved = false
+          end
+        end
       end
     end
-      return true
-    rescue => e
-      return false
+    return saved
   end
 end

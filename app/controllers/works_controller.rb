@@ -21,7 +21,7 @@ class WorksController < ApplicationController
 
   def new
     @user = User.find_by(id: params[:user_id])
-    @work = @user.works.build
+    @form = Form::WorkCollection.new
     @date = params[:date].to_date
     range = Time.zone.parse(params[:date]).beginning_of_day..Time.zone.parse(params[:date]).end_of_day
     @works = @user.works.where(start_time: range)
@@ -29,15 +29,17 @@ class WorksController < ApplicationController
 
   def create
     @user = User.find_by(id: params[:user_id])
-    @work = @user.works.build(works_params)
+    @form = Form::WorkCollection.new(works_collection_params)
     @date = params[:date].to_date
     range = Time.zone.parse(params[:date]).beginning_of_day..Time.zone.parse(params[:date]).end_of_day
-    @works = @user.works.where(start_time: range)
-    if @work.save
-      flash[:success] = "工数を登録しました。"
+    if @form.save
+      flash[:success] = "登録しました。"
+      @works = @user.works.where(start_time: range)
       redirect_to "/works/#{@user.id}/#{@date}/new"
     else
-      render 'works/new'
+      @input_has_error = true
+      @works = @user.works.where(start_time: range)
+      render 'new'
     end
   end
 
@@ -89,6 +91,12 @@ class WorksController < ApplicationController
 
     def works_params
       params.require(:work).permit(:project_id, :content, :start_time, :end_time)
+    end
+
+    def works_collection_params
+      params
+      .require(:form_work_collection)
+      .permit(works_attributes: [:signup, :user_id, :project_id, :content, :start_time, :end_time])
     end
 
     def works_search_params

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20211201022634) do
+ActiveRecord::Schema.define(version: 20211201064712) do
 
   create_table "holidays", force: :cascade do |t|
     t.string "name"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20211201022634) do
     t.string "user_name_no_blank"
     t.integer "user_id"
     t.integer "project_id"
+    t.boolean "signup", default: false
     t.index ["project_id"], name: "index_works_on_project_id"
     t.index ["user_id"], name: "index_works_on_user_id"
   end
