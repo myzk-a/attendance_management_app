@@ -5,7 +5,7 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
     @admin_user = users(:SYATYO)
     @butyo      = users(:BUTYO)
     @syunin     = users(:SYUNIN)
-    @today      = "2021-12-01".to_date
+    @today      = Time.zone.now.to_date
     @project    = projects(:X)
     @butyo.works.create!( project_id: @project.id,
                           content:    "テストコード作成",
@@ -25,10 +25,12 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
     start_time = Time.zone.parse('2021-12-01 9:00:00')
     end_time   = Time.zone.parse('2021-12-01 12:30:00')
     assert_difference 'Work.count', 1 do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
-                                                                  end_time:   end_time,
-                                                                  project_id: @project.id,
-                                                                  content:    "test" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { form_work_collection: { works_attributes: { "0" => { user_id:    @butyo.id,
+                                                                                                               start_time: start_time,
+                                                                                                               end_time:   end_time,
+                                                                                                               project_id: @project.id,
+                                                                                                               content:    "test",
+                                                                                                               signup:     true} } } }
     end
     follow_redirect!
     assert_template "works/new"
@@ -101,10 +103,12 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
     start_time = Time.zone.parse('2021-12-01 9:00:00')
     end_time   = Time.zone.parse('2021-12-01 12:30:00')
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
-                                                                  end_time:   end_time,
-                                                                  project_id: @project.id,
-                                                                  content:    "test" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { form_work_collection: { works_attributes: { "0" => { user_id:    @butyo.id,
+                                                                                                               start_time: start_time,
+                                                                                                               end_time:   end_time,
+                                                                                                               project_id: @project.id,
+                                                                                                               content:    "test",
+                                                                                                               signup:     true} } } }
     end
     assert_redirected_to login_url
   end
@@ -114,10 +118,12 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
     start_time = Time.zone.parse('2021-12-01 9:00:00')
     end_time   = Time.zone.parse('2021-12-01 12:30:00')
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
-                                                                  end_time:   end_time,
-                                                                  project_id: @project.id,
-                                                                  content:    "test" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { form_work_collection: { works_attributes: { "0" => { user_id:    @butyo.id,
+                                                                                                               start_time: start_time,
+                                                                                                               end_time:   end_time,
+                                                                                                               project_id: @project.id,
+                                                                                                               content:    "test",
+                                                                                                               signup:     true} } } }
     end
     assert_redirected_to root_url
   end
@@ -127,23 +133,27 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
     start_time = Time.zone.parse('2021-12-01 9:00:00')
     end_time   = Time.zone.parse('2021-12-01 12:30:00')
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
-                                                                  end_time:   end_time,
-                                                                  project_id: @project.id,
-                                                                  content:    "test" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { form_work_collection: { works_attributes: { "0" => { user_id:    @butyo.id,
+                                                                                                               start_time: start_time,
+                                                                                                               end_time:   end_time,
+                                                                                                               project_id: @project.id,
+                                                                                                               content:    "test",
+                                                                                                               signup:     true} } } }
     end
     assert_redirected_to root_url
   end
 
   test "should redirect create when logged in correct user and create tommorow" do
     log_in_as(@butyo)
-    start_time = Time.zone.parse('2021-12-02 9:00:00')
-    end_time   = Time.zone.parse('2021-12-02 12:30:00')
+    start_time = Time.zone.parse((@today+1).to_date.to_s + " " + "9:00:00")
+    end_time   = Time.zone.parse((@today+1).to_date.to_s + " " + "12:30:00")
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today + 1}/new", params: { work: { start_time: start_time,
-                                                                      end_time: end_time,
-                                                                      project_id:    @project.id,
-                                                                      content:       "test" } }
+      post "/works/#{@butyo.id}/#{@today+1}/new", params: { form_work_collection: { works_attributes: { "0" => { user_id:    @butyo.id,
+                                                                                                               start_time: start_time,
+                                                                                                               end_time:   end_time,
+                                                                                                               project_id: @project.id,
+                                                                                                               content:    "test",
+                                                                                                               signup:     true} } } }
     end
     assert_redirected_to root_url
   end

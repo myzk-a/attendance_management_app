@@ -12,10 +12,12 @@ class WorksSignupTest < ActionDispatch::IntegrationTest
     get "/works/#{@butyo.id}/#{@today}/new"
     assert_template "works/new"
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: "",
-                                                                  end_time:   "",
-                                                                  project_id: "",
-                                                                  content:    "" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { form_work_collection: { works_attributes: { "0" => { user_id:    "",
+                                                                                                               start_time: "",
+                                                                                                               end_time:   "",
+                                                                                                               project_id: "",
+                                                                                                               content:    "",
+                                                                                                               signup:     true} } } }
     end
     assert_select "div#error_explanation"
     assert_template "works/new"
@@ -28,10 +30,12 @@ class WorksSignupTest < ActionDispatch::IntegrationTest
     start_time = Time.zone.parse('2021-11-23 9:00:00')
     end_time   = Time.zone.parse('2021-11-23 12:30:00')
     assert_difference 'Work.count', 1 do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
-                                                                  end_time:   end_time,
-                                                                  project_id: @project.id,
-                                                                  content:    "test" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { form_work_collection: { works_attributes: { "0" => { user_id:    @butyo.id,
+                                                                                                               start_time: start_time,
+                                                                                                               end_time:   end_time,
+                                                                                                               project_id: @project.id,
+                                                                                                               content:    "test",
+                                                                                                               signup:     true} } } }
     end
     follow_redirect!
     assert_template "works/new"
