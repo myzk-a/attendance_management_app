@@ -46,7 +46,7 @@ class Work < ApplicationRecord
   scope :period_is, -> (year, month) do
     if year.present? && month.present?
       str_date = year + "-" + month + "-01"
-      date = str_date.to_date
+      date = Time.zone.parse(str_date + " " + "0:00:00")
       range = date.beginning_of_month..date.end_of_month
       where(start_time: range)
     end
