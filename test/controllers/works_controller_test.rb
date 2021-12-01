@@ -5,23 +5,34 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
     @admin_user = users(:SYATYO)
     @butyo      = users(:BUTYO)
     @syunin     = users(:SYUNIN)
-    @today      = DateTime.now.to_date
+    @today      = "2021-12-01".to_date
     @project    = projects(:X)
-    Work.create( user_id:      @butyo.id,
-                 user_name:    @butyo.name,
-                 project_id:   @project.id,
-                 project_name: @project.name,
-                 project_code: @project.code,
-                 content:      "テストコード作成",
-                 start_time:   Time.zone.parse('2021-11-23 15:15:12'),
-                 end_time:     Time.zone.parse('2021-11-23 16:15:12'))
-    @work = Work.first
+    @butyo.works.create!( project_id: @project.id,
+                          content:    "テストコード作成",
+                          start_time: Time.zone.parse('2021-11-23 15:15:12'),
+                          end_time:   Time.zone.parse('2021-11-23 16:15:12'))
+    @work = @butyo.works.first
   end
 
   test "should get new when logged in correct user" do
     log_in_as(@butyo)
     get "/works/#{@butyo.id}/#{@today}/new"
     assert_response :success
+  end
+
+  test "should get create when logged in correct user" do
+    log_in_as(@butyo)
+    start_time = Time.zone.parse('2021-12-01 9:00:00')
+    end_time   = Time.zone.parse('2021-12-01 12:30:00')
+    assert_difference 'Work.count', 1 do
+      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
+                                                                  end_time:   end_time,
+                                                                  project_id: @project.id,
+                                                                  content:    "test" } }
+    end
+    follow_redirect!
+    assert_template "works/new"
+    assert_not flash.empty?
   end
 
   test "should get show when logged in admin user" do
@@ -87,64 +98,50 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect create when not logged in" do
+    start_time = Time.zone.parse('2021-12-01 9:00:00')
+    end_time   = Time.zone.parse('2021-12-01 12:30:00')
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { user_id:       @butyo.id,
-                                                                  start_hours:   "9",
-                                                                  start_minutes: "0",
-                                                                  end_hours:     "12",
-                                                                  end_minutes:   "30",
-                                                                  project_id:    @project.id,
-                                                                  content:       "test" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
+                                                                  end_time:   end_time,
+                                                                  project_id: @project.id,
+                                                                  content:    "test" } }
     end
     assert_redirected_to login_url
   end
 
   test "should redirect create when logged in admin user" do
     log_in_as(@admin_user)
+    start_time = Time.zone.parse('2021-12-01 9:00:00')
+    end_time   = Time.zone.parse('2021-12-01 12:30:00')
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { user_id:       @butyo.id,
-                                                                  start_hours:   "9",
-                                                                  start_minutes: "0",
-                                                                  end_hours:     "12",
-                                                                  end_minutes:   "30",
-                                                                  project_id:    @project.id,
-                                                                  content:       "test" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
+                                                                  end_time:   end_time,
+                                                                  project_id: @project.id,
+                                                                  content:    "test" } }
     end
     assert_redirected_to root_url
   end
 
   test "should redirect create when logged in wrong user" do
     log_in_as(@syunin)
+    start_time = Time.zone.parse('2021-12-01 9:00:00')
+    end_time   = Time.zone.parse('2021-12-01 12:30:00')
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { user_id:       @syunin.id,
-                                                                  start_hours:   "9",
-                                                                  start_minutes: "0",
-                                                                  end_hours:     "12",
-                                                                  end_minutes:   "30",
-                                                                  project_id:    @project.id,
-                                                                  content:       "test" } }
-    end
-    assert_redirected_to root_url
-    assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { user_id:       @butyo.id,
-                                                                  start_hours:   "9",
-                                                                  start_minutes: "0",
-                                                                  end_hours:     "12",
-                                                                  end_minutes:   "30",
-                                                                  project_id:    @project.id,
-                                                                  content:       "test" } }
+      post "/works/#{@butyo.id}/#{@today}/new", params: { work: { start_time: start_time,
+                                                                  end_time:   end_time,
+                                                                  project_id: @project.id,
+                                                                  content:    "test" } }
     end
     assert_redirected_to root_url
   end
 
   test "should redirect create when logged in correct user and create tommorow" do
     log_in_as(@butyo)
+    start_time = Time.zone.parse('2021-12-02 9:00:00')
+    end_time   = Time.zone.parse('2021-12-02 12:30:00')
     assert_no_difference 'Work.count' do
-      post "/works/#{@butyo.id}/#{@today + 1}/new", params: { work: { user_id:       @butyo.id,
-                                                                      start_hours:   "9",
-                                                                      start_minutes: "0",
-                                                                      end_hours:     "12",
-                                                                      end_minutes:   "30",
+      post "/works/#{@butyo.id}/#{@today + 1}/new", params: { work: { start_time: start_time,
+                                                                      end_time: end_time,
                                                                       project_id:    @project.id,
                                                                       content:       "test" } }
     end
@@ -169,15 +166,14 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect update when not logged in" do
+    start_time = Time.zone.parse(@work.start_time.to_date.to_s + " " + "14:30:00")
+    end_time   = Time.zone.parse(@work.start_time.to_date.to_s + " " + "17:15:00")
     project = projects(:Y)
     content = "テストコード修正"
-    patch "/works/#{@work.id}/edit", params: { work: { user_id:       @butyo.id,
-                                                       start_hours:   "14",
-                                                       start_minutes: "30",
-                                                       end_hours:     "17",
-                                                       end_minutes:   "15",
-                                                       project_id:    project.id,
-                                                       content:       content } }
+    patch "/works/#{@work.id}/edit", params: { work: { start_time: start_time,
+                                                       end_time:   end_time,
+                                                       project_id: project.id,
+                                                       content:    content } }
     @work.reload
     assert_not_equal project.id,   @work.project_id
     assert_not_equal project.name, @work.project_name
@@ -188,15 +184,14 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
 
   test "should redirect update when logged in admin user" do
     log_in_as(@admin_user)
+    start_time = Time.zone.parse(@work.start_time.to_date.to_s + " " + "14:30:00")
+    end_time   = Time.zone.parse(@work.start_time.to_date.to_s + " " + "17:15:00")
     project = projects(:Y)
     content = "テストコード修正"
-    patch "/works/#{@work.id}/edit", params: { work: { user_id:       @butyo.id,
-                                                       start_hours:   "14",
-                                                       start_minutes: "30",
-                                                       end_hours:     "17",
-                                                       end_minutes:   "15",
-                                                       project_id:    project.id,
-                                                       content:       content } }
+    patch "/works/#{@work.id}/edit", params: { work: { start_time: start_time,
+                                                       end_time:   end_time,
+                                                       project_id: project.id,
+                                                       content:    content } }
     @work.reload
     assert_not_equal project.id,   @work.project_id
     assert_not_equal project.name, @work.project_name
@@ -209,15 +204,14 @@ class WorksControllerTest < ActionDispatch::IntegrationTest
 
   test "should redirect update when logged in wrong user" do
     log_in_as(@syunin)
+    start_time = Time.zone.parse(@work.start_time.to_date.to_s + " " + "14:30:00")
+    end_time   = Time.zone.parse(@work.start_time.to_date.to_s + " " + "17:15:00")
     project = projects(:Y)
     content = "テストコード修正"
-    patch "/works/#{@work.id}/edit", params: { work: { user_id:       @butyo.id,
-                                                       start_hours:   "14",
-                                                       start_minutes: "30",
-                                                       end_hours:     "17",
-                                                       end_minutes:   "15",
-                                                       project_id:    project.id,
-                                                       content:       content } }
+    patch "/works/#{@work.id}/edit", params: { work: { start_time: start_time,
+                                                       end_time:   end_time,
+                                                       project_id: project.id,
+                                                       content:    content } }
     @work.reload
     assert_not_equal project.id,   @work.project_id
     assert_not_equal project.name, @work.project_name
