@@ -261,80 +261,44 @@ class WorksSearchTest < ActionDispatch::IntegrationTest
       project_x = projects(:X)
       project_y = projects(:Y)
       #部長の工数
-      Work.create( user_id:      butyo.id,
-                   user_name:    butyo.name,
-                   project_id:   project_x.id,
-                   project_name: project_x.name,
-                   project_code: project_x.code,
-                   content:      "部長、プロジェクトX、11月",
-                   start_time:   Time.zone.parse('2021-11-20 9:00:00'),
-                   end_time:     Time.zone.parse('2021-11-20 10:30:00') )
-      Work.create( user_id:      butyo.id,
-                   user_name:    butyo.name,
-                   project_id:   project_x.id,
-                   project_name: project_x.name,
-                   project_code: project_x.code,
-                   content:      "部長、プロジェクトX、12月",
-                   start_time:   Time.zone.parse('2021-12-20 9:00:00'),
-                   end_time:     Time.zone.parse('2021-12-20 9:45:00') )
-      Work.create( user_id:      butyo.id,
-                   user_name:    butyo.name,
-                   project_id:   project_y.id,
-                   project_name: project_y.name,
-                   project_code: project_y.code,
-                   content:      "部長、プロジェクトY、11月",
-                   start_time:   Time.zone.parse('2021-11-21 9:00:00'),
-                   end_time:     Time.zone.parse('2021-11-21 10:15:00') )
-      Work.create( user_id:      butyo.id,
-                   user_name:    butyo.name,
-                   project_id:   project_y.id,
-                   project_name: project_y.name,
-                   project_code: project_y.code,
-                   content:      "部長、プロジェクトY、12月",
-                   start_time:   Time.zone.parse('2021-12-21 9:00:00'),
-                   end_time:     Time.zone.parse('2021-12-21 9:30:00') )
+      butyo.works.create!( project_id: project_x.id,
+                           content:    "部長、プロジェクトX、11月",
+                           start_time: Time.zone.parse('2021-11-20 9:00:00'),
+                           end_time:   Time.zone.parse('2021-11-20 10:30:00') )
+      butyo.works.create!( project_id: project_x.id,
+                           content:    "部長、プロジェクトX、12月",
+                           start_time: Time.zone.parse('2021-12-20 9:00:00'),
+                           end_time:   Time.zone.parse('2021-12-20 9:45:00') )
+      butyo.works.create!( project_id: project_y.id,
+                           content:    "部長、プロジェクトY、11月",
+                           start_time: Time.zone.parse('2021-11-21 9:00:00'),
+                           end_time:   Time.zone.parse('2021-11-21 10:15:00') )
+      butyo.works.create!( project_id: project_y.id,
+                           content:    "部長、プロジェクトY、12月",
+                           start_time: Time.zone.parse('2021-12-21 9:00:00'),
+                           end_time:   Time.zone.parse('2021-12-21 9:30:00') )
       #主任の工数
-      Work.create( user_id:      syunin.id,
-                   user_name:    syunin.name,
-                   project_id:   project_x.id,
-                   project_name: project_x.name,
-                   project_code: project_x.code,
-                   content:      "主任、プロジェクトX、11月",
-                   start_time:   Time.zone.parse('2021-11-22 9:00:00'),
-                   end_time:     Time.zone.parse('2021-11-22 9:45:00') )
-      Work.create( user_id:      syunin.id,
-                   user_name:    syunin.name,
-                   project_id:   project_x.id,
-                   project_name: project_x.name,
-                   project_code: project_x.code,
-                   content:      "主任、プロジェクトX、12月",
-                   start_time:   Time.zone.parse('2021-12-22 9:00:00'),
-                   end_time:     Time.zone.parse('2021-12-22 10:30:00') )
-      Work.create( user_id:      syunin.id,
-                   user_name:    syunin.name,
-                   project_id:   project_y.id,
-                   project_name: project_y.name,
-                   project_code: project_y.code,
-                   content:      "主任、プロジェクトY、11月",
-                   start_time:   Time.zone.parse('2021-11-23 9:00:00'),
-                   end_time:     Time.zone.parse('2021-11-23 10:45:00') )
-      Work.create( user_id:      syunin.id,
-                   user_name:    syunin.name,
-                   project_id:   project_y.id,
-                   project_name: project_y.name,
-                   project_code: project_y.code,
-                   content:      "主任、プロジェクトY、12月",
-                   start_time:   Time.zone.parse('2021-12-23 9:00:00'),
-                   end_time:     Time.zone.parse('2021-12-23 9:30:00') )
+      syunin.works.create!( project_id: project_x.id,
+                            content:    "主任、プロジェクトX、11月",
+                            start_time: Time.zone.parse('2021-11-22 9:00:00'),
+                            end_time:   Time.zone.parse('2021-11-22 9:45:00') )
+      syunin.works.create!( project_id: project_x.id,
+                            content:    "主任、プロジェクトX、12月",
+                            start_time: Time.zone.parse('2021-12-22 9:00:00'),
+                            end_time:   Time.zone.parse('2021-12-22 10:30:00') )
+      syunin.works.create!( project_id: project_y.id,
+                            content:    "主任、プロジェクトY、11月",
+                            start_time: Time.zone.parse('2021-11-23 9:00:00'),
+                            end_time:   Time.zone.parse('2021-11-23 10:45:00') )
+      syunin.works.create!( project_id: project_y.id,
+                            content:    "主任、プロジェクトY、12月",
+                            start_time: Time.zone.parse('2021-12-23 9:00:00'),
+                            end_time:   Time.zone.parse('2021-12-23 9:30:00') )
       #社員1の工数
-      Work.create( user_id:      syain1.id,
-                   user_name:    syain1.name,
-                   project_id:   project_y.id,
-                   project_name: project_y.name,
-                   project_code: project_y.code,
-                   content:      "社員1、プロジェクトY、10月",
-                   start_time:   Time.zone.parse('2021-10-23 9:00:00'),
-                   end_time:     Time.zone.parse('2021-10-23 9:30:00') )
+      syain1.works.create!( project_id: project_y.id,
+                            content:    "社員1、プロジェクトY、10月",
+                            start_time: Time.zone.parse('2021-10-23 9:00:00'),
+                            end_time:   Time.zone.parse('2021-10-23 9:30:00') )
     end
 
 end
